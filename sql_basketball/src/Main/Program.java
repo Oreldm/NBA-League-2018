@@ -14,6 +14,7 @@ public class Program implements ImagesGui {
 	}
 
 	private static void setFrameProperites(LoginGUI frame) {
+		
 		final String loginTitle = "Login To OracleDB";
 
 		frame.pack();

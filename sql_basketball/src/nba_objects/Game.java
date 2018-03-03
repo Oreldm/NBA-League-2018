@@ -20,10 +20,10 @@ public class Game {
 		this.homeTeamId=Integer.parseInt(gameArr[1]);
 		this.visitTeamId=Integer.parseInt(gameArr[2]);
 		
-		ArrayList<String> getTeamResult = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM", this.homeTeamId, null);
+		ArrayList<String> getTeamResult = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM", ""+this.homeTeamId, null);
 		homeTeam= new Team(getTeamResult.get(1));
 		
-		getTeamResult = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM", this.visitTeamId, null);
+		getTeamResult = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM", ""+this.visitTeamId, null);
 		visitTeam= new Team(getTeamResult.get(1));
 		
 		this.startDate=gameArr[3];

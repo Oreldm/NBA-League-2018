@@ -21,7 +21,7 @@ import utils.Paths_NBA;
 public class ONE_Team_Panel extends JPanel implements Paths_NBA {
 	private static final long serialVersionUID = 1L;
 
-	public ONE_Team_Panel(ArrayList<String> result) throws HeadlessException, SQLException, IOException {
+	public ONE_Team_Panel(Team theTeam) throws HeadlessException, SQLException, IOException {
 		final JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.red));
 		panel.setPreferredSize(new Dimension(800, 600));
@@ -29,49 +29,56 @@ public class ONE_Team_Panel extends JPanel implements Paths_NBA {
 		final JScrollPane scroll = new JScrollPane(panel);
 		JLabel temp;
 		panel.setLayout(new GridLayout(15, 2));
-		System.out.println(result.get(0));
-		int i = 1;
-		while (i < result.size()) {
-			Team tempTeam = new Team(result.get(i));
-			BufferedImage logo = null;
-
-			if (FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)
-					&& FilesUtils.isFileDirectoryExists(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName))) {
-				logo = ImageIO.read(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
-			} else {
-				if (!FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)) {
-					new File(TEAMS_IMAGES_CACHE).mkdir();
-				}
-				URL url = new URL(TEAMS_IMAGES_URL + tempTeam.logoFileName);
-				logo = ImageIO.read(url);
-				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
-			}
-
-			logo = ImagesGui.resize(logo, 30, 30);
-			ImageIcon imageIcon = new ImageIcon(logo);
-
-			temp = new JLabel(tempTeam.name + " " + tempTeam.nickname, imageIcon, SwingConstants.LEFT);
-			temp.setBorder(BorderFactory.createLineBorder(Color.gray));
-			temp.setAlignmentX(LEFT_ALIGNMENT);
-			temp.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					// you can open a new frame here as
-					// i have assumed you have declared "frame" as instance variable
-					panel.removeAll();
-					System.out.println("hello");
-					System.out.println("world");
-					setSize(300, 300);
-					setVisible(true);
-				}
-			});
-			panel.add(temp);
-			i++;
-		}
+//		System.out.println(result.get(0));
+//		int i = 1;
+//		while (i < result.size()) {
+//			Team tempTeam = new Team(result.get(i));
+//			BufferedImage logo = null;
+//
+//			if (FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)
+//					&& FilesUtils.isFileDirectoryExists(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName))) {
+//				logo = ImageIO.read(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
+//			} else {
+//				if (!FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)) {
+//					new File(TEAMS_IMAGES_CACHE).mkdir();
+//				}
+//				URL url = new URL(TEAMS_IMAGES_URL + tempTeam.logoFileName);
+//				logo = ImageIO.read(url);
+//				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
+//			}
+//
+//			logo = ImagesGui.resize(logo, 30, 30);
+//			ImageIcon imageIcon = new ImageIcon(logo);
+//
+//			temp = new JLabel(tempTeam.name + " " + tempTeam.nickname, imageIcon, SwingConstants.LEFT);
+//			temp.setBorder(BorderFactory.createLineBorder(Color.gray));
+//			temp.setAlignmentX(LEFT_ALIGNMENT);
+//			temp.addMouseListener(new MouseAdapter() {
+//				public void mouseClicked(MouseEvent e) {
+//					// you can open a new frame here as
+//					// i have assumed you have declared "frame" as instance variable
+//					panel.removeAll();
+//					System.out.println("hello");
+//					System.out.println("world");
+//					setSize(300, 300);
+//					setVisible(true);
+//				}
+//			});
+//			panel.add(temp);
+//			i++;
+//		}
+		
+		temp = new JLabel(theTeam.name + " " + theTeam.nickname);
+		temp.setBorder(BorderFactory.createLineBorder(Color.gray));
+		temp.setAlignmentX(LEFT_ALIGNMENT);
+		panel.add(temp);
+		System.out.println(theTeam);
 
 		setLayout(new BorderLayout());
 		add(scroll, BorderLayout.CENTER);
 		setSize(300, 300);
 		setVisible(true);
+		updateUI();
 	}
 
 }

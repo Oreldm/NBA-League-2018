@@ -21,5 +21,13 @@ public class Team {
 		this.visitSuit=teamArr[7];
 		this.logoFileName=teamArr[8];
 	}
+
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", nickname=" + nickname + ", championshipment=" + championshipment
+				+ ", leagueplace=" + leagueplace + ", homeSuit=" + homeSuit + ", visitSuit=" + visitSuit
+				+ ", logoFileName=" + logoFileName + "]";
+	}
+	
 	
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Main.Actions;
 import nba_objects.Team;
 import utils.FilesUtils;
 import utils.ImagesGui;
@@ -20,14 +21,14 @@ import utils.Paths_NBA;
 
 public class Teams_Panel extends JPanel implements Paths_NBA {
 	private static final long serialVersionUID = 1L;
-
+	
 	public Teams_Panel(ArrayList<String> result) throws HeadlessException, SQLException, IOException {
 		final JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createLineBorder(Color.red));
-		panel.setPreferredSize(new Dimension(800, 600));
+		panel.setPreferredSize(new Dimension(500, 800));
 
 		final JScrollPane scroll = new JScrollPane(panel);
-		JButton temp;
+		JLabel temp;
 		panel.setLayout(new GridLayout(15, 2));
 		System.out.println(result.get(0));
 		int i = 1;
@@ -47,26 +48,15 @@ public class Teams_Panel extends JPanel implements Paths_NBA {
 				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
 			}
 
-			logo = ImagesGui.resize(logo, 30, 30);
+			logo = ImagesGui.resize(logo, 50, 50);
 			ImageIcon imageIcon = new ImageIcon(logo);
 
-			temp = new JButton(tempTeam.name + " " + tempTeam.nickname, imageIcon);
+			temp = new JLabel(tempTeam.name + " " + tempTeam.nickname, imageIcon,0);
 			temp.setHorizontalAlignment(SwingConstants.LEFT);
 			temp.setBorder(BorderFactory.createLineBorder(Color.gray));
 			temp.setAlignmentX(LEFT_ALIGNMENT);
-			temp.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					// you can open a new frame here as
-					// i have assumed you have declared "frame" as instance variable
-					panel.removeAll();
-					System.out.println("hello");
-					System.out.println("world");
-					setSize(300, 300);
-					setVisible(true);
-				}
-				
-				
-			});
+			temp.addMouseListener(Actions.clickLabelChangeColor(this));
+			//temp.addMouseListener(Actions.changeTo1TeamPanel(new JFrame(), tempTeam));
 			
 			panel.add(temp);
 			i++;

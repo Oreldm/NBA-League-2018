@@ -59,7 +59,7 @@ public class JDBC {
 		return result;
 	}
 
-	public ArrayList<String> runDBFunctionTableTypeReturn(String functionName, int inputVariables, String returnType) {
+	public ArrayList<String> runDBFunctionTableTypeReturn(String functionName, String inputVariables, String returnType) {
 		// need to use this function because of massive data sometimes from DB
 
 		ArrayList<String> result = new ArrayList<>();
@@ -75,7 +75,7 @@ public class JDBC {
 			else
 				stproc_stmt.registerOutParameter(1, Types.ARRAY, returnType);
 
-			stproc_stmt.setInt(2, inputVariables);
+			stproc_stmt.setString(2, inputVariables);
 			stproc_stmt.executeUpdate();
 			ARRAY array_to_pass = null;
 			try {
