@@ -1,8 +1,6 @@
 package nba_objects;
 
 public class Referee {
-	//asd
-	//dsa
 	int refid;
 	String firstName;
 	String lastName;
