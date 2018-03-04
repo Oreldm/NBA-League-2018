@@ -203,6 +203,16 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				c.setBackground(null);
 				((JComponent) c).setOpaque(true);
 			}
+			
+		public void mouseClicked(MouseEvent e) {
+			if (e.getComponent().getName().equals("player_label"))
+				System.out.println("player_label");
+			else{
+				System.out.println("team_label");
+				System.out.println(((JLabel) e.getComponent()).getText());
+			}
+			
+		}
 		};
 		return action;
 	}

@@ -9,6 +9,7 @@ import utils.ImagesGui;
 
 public class Program implements ImagesGui {
 	public static void main(String[] args) throws ClassNotFoundException {
+		System.out.println("asd");
 		LoginGUI frame = new LoginGUI();
 		setFrameProperites(frame);
 	}

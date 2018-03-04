@@ -94,6 +94,7 @@ public class Players_Panel extends JPanel implements Paths_NBA {
 			temp.setBorder(BorderFactory.createLineBorder(Color.gray));
 			temp.setAlignmentX(LEFT_ALIGNMENT);
 			temp.setAlignmentY(TOP_ALIGNMENT);
+			temp.setName("player_label");
 			temp.addMouseListener(Actions.clickLabelChangeColor(this));
 //			temp.addMouseListener(new MouseAdapter() {
 //				public void mouseClicked(MouseEvent e) {
