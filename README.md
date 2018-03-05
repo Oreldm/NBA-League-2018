@@ -5,7 +5,7 @@ It uses java & oracle-database w/ PL/SQL.
 
 
 This project is under the MIT License
-Copyright (c) 2018 [Orel Damari, Ariel Segol, Ravid Anbary]
+Copyright (c) 2018 [Orel Damari, Ariel Sgl, Ravid Anbary]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
