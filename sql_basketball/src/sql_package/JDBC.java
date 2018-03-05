@@ -206,8 +206,6 @@ public class JDBC {
 			e.printStackTrace(new PrintWriter(errors));
 		}
 	}
-
-	
 	
 
 }

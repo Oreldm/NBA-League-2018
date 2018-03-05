@@ -23,7 +23,7 @@ public class AppGUI extends JFrame implements ImagesGui {
 		JPanel jpMenu = new JPanel();
 		JPanel headline = new JPanel();
 		headline.setLayout(new GridLayout(2, 1));
-		jpMenu.setLayout(new GridLayout(1, 3));
+		jpMenu.setLayout(new GridLayout(1, 4));
 		
 		JButton jbTeams = new JButton("Teams", TEAMS_ICON);
 		jbTeams.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -41,6 +41,11 @@ public class AppGUI extends JFrame implements ImagesGui {
 		jbGames.setHorizontalTextPosition(SwingConstants.CENTER);
 		jpMenu.add(jbGames);
 		
+		JButton jbManagement = new JButton("Management", MANAGEMENT_ICON);
+		jbManagement.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jbManagement.setHorizontalTextPosition(SwingConstants.CENTER);
+		jpMenu.add(jbManagement);
+		
 		headline.add(jlHeadLine, BorderLayout.NORTH);
 		headline.add(jpMenu, BorderLayout.SOUTH);
 		headline.setBorder(BorderFactory.createLineBorder(Color.black, 3));
@@ -50,6 +55,7 @@ public class AppGUI extends JFrame implements ImagesGui {
 		jbTeams.addActionListener(Actions.changeToTeamsPannel(this));
 		jbPlayers.addActionListener(Actions.changeToPlayersPannel());
 		jbGames.addActionListener(Actions.changeToGamesPannel(this, 1610612754, 1610612756));
+		jbManagement.addActionListener(Actions.changeToManagementPanel(this));
 
 		// frame commands
 		pack();

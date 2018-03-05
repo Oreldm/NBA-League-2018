@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import Panels.Games_Panel_After_Search;
+import Panels.Management_Panel;
 import Panels.ONE_Team_Panel;
 import Panels.Players_Panel;
 import Panels.Teams_Panel;
@@ -253,6 +254,21 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			}
+		};
+		return action;
+	}
+
+	public static ActionListener changeToManagementPanel(JFrame frame) {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (insidePanel != null)
+					frame.remove(insidePanel);
+				insidePanel = new Management_Panel();
+				frame.add(insidePanel, BorderLayout.CENTER);
+				SwingUtilities.updateComponentTreeUI(frame);
 			}
 		};
 		return action;
