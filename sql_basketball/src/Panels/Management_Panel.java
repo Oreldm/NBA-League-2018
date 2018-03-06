@@ -30,7 +30,7 @@ public class Management_Panel extends JPanel implements Paths_NBA, ImagesGui {
 		int i=0;
 		for (String theText: text) {
 			label = new JLabel(theText, pictures.get(i++),0);
-			label.setName("Mgmt_label");
+			label.setName("Mgmt_label" + i);
 			label.addMouseListener(Actions.clickLabelChangeColor(this));
 			label.setHorizontalAlignment(SwingConstants.LEFT);
 			label.setAlignmentX(LEFT_ALIGNMENT);

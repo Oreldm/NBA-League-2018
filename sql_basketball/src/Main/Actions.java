@@ -24,11 +24,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
 import Panels.ONE_Team_Panel;
 import Panels.Players_Panel;
+import Panels.Remove_Player_Panel;
 import Panels.Teams_Panel;
 import nba_objects.Team;
 import sql_package.JDBC;
@@ -209,14 +211,32 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getComponent().getName().equals("player_label"))
 				System.out.println("player_label");
-			else if (e.getComponent().getName().equals("Mgmt_label")) {
+			else if (e.getComponent().getName().contains("Mgmt_label")) {
 				System.out.println("mgmt_label");
-				System.out.println(((JLabel) e.getComponent()).getText());
+				String choice = ((JLabel) e.getComponent()).getName().substring(10);
+				System.out.println(choice);
+				System.out.println(((JLabel) e.getComponent()).getName());
 				if (insidePanel != null) {
 					totalFrame.remove(insidePanel);
 				}
-					insidePanel = new Add_USER_Panel();
-					SwingUtilities.updateComponentTreeUI(totalFrame);
+				switch (choice) {
+				case "1": 	insidePanel = new Add_USER_Panel();
+							break;
+				case "2": 	insidePanel = new Add_Player_Panel();
+							break;		
+				case "3": 	insidePanel = new Remove_Player_Panel();
+							break;
+				case "4": 	insidePanel = new Add_USER_Panel();
+							break;
+				case "5": 	insidePanel = new Add_USER_Panel();
+							break;
+				case "6": 	insidePanel = new Add_USER_Panel();
+							break;	
+				default: 	break;	
+				}
+				
+				totalFrame.add(insidePanel);
+				SwingUtilities.updateComponentTreeUI(totalFrame);
 			}
 			else {
 					System.out.println("team_label");
