@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import Panels.Add_USER_Panel;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
 import Panels.ONE_Team_Panel;
@@ -208,11 +209,19 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getComponent().getName().equals("player_label"))
 				System.out.println("player_label");
-			else{
-				System.out.println("team_label");
+			else if (e.getComponent().getName().equals("Mgmt_label")) {
+				System.out.println("mgmt_label");
 				System.out.println(((JLabel) e.getComponent()).getText());
+				if (insidePanel != null) {
+					totalFrame.remove(insidePanel);
+				}
+					insidePanel = new Add_USER_Panel();
+					SwingUtilities.updateComponentTreeUI(totalFrame);
 			}
-			
+			else {
+					System.out.println("team_label");
+					System.out.println(((JLabel) e.getComponent()).getText());
+			}
 		}
 		};
 		return action;

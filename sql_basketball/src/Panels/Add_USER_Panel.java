@@ -42,15 +42,15 @@ public class Add_USER_Panel extends JPanel{
 		setSize(300, 300);
 		setVisible(true);
 	}
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.add(new Add_USER_Panel());
-		frame.pack();
-		frame.setSize(300, 180);
-		frame.setLocationRelativeTo(null); // Center the frame
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setAlwaysOnTop(true);
-		frame.setResizable(false);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		JFrame frame = new JFrame();
+//		frame.add(new Add_USER_Panel());
+//		frame.pack();
+//		frame.setSize(300, 180);
+//		frame.setLocationRelativeTo(null); // Center the frame
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setAlwaysOnTop(true);
+//		frame.setResizable(false);
+//		frame.setVisible(true);
+//	}
 }
