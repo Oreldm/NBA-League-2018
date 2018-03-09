@@ -310,7 +310,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					playerId = ((Remove_Player_Panel) playersPanel).getLabelText();
 				}
 				System.out.println("CHECK="+playerId);
-				jdbc.runDBProcedure("DELETE_ROW_BY_PK", "Teams"+" "+playerId);
+				jdbc.runDBProcedure("DELETE_PLAYER", playerId);
 				System.out.println("Success");
 			}
 		};
