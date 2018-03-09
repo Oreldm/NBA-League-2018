@@ -32,6 +32,7 @@ import Panels.ONE_Team_Panel;
 import Panels.Players_Panel;
 import Panels.Remove_Player_Panel;
 import Panels.Teams_Panel;
+import Panels.Update_Player_Panel;
 import nba_objects.Team;
 import sql_package.JDBC;
 import sql_package.SQL_FUNCTIONS;
@@ -226,7 +227,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;		
 				case "3": 	insidePanel = new Remove_Player_Panel();
 							break;
-				case "4": 	insidePanel = new Add_USER_Panel();
+				case "4": 	insidePanel = new Update_Player_Panel();
 							break;
 				case "5": 	insidePanel = new Add_USER_Panel();
 							break;
