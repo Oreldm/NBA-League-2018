@@ -296,6 +296,28 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
+	public static ActionListener deletePlayers() {
+		// TODO Auto-generated method stub
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// using it because of massive data
+				String playerId;
+				try {
+					playerId = ((Remove_Player_Panel) insidePanel).getLabelText();
+				} catch (Exception e1) {
+					playerId = ((Remove_Player_Panel) playersPanel).getLabelText();
+				}
+				System.out.println("CHECK="+playerId);
+				jdbc.runDBProcedure("DELETE_ROW_BY_PK", "Teams"+" "+playerId);
+				System.out.println("Success");
+			}
+		};
+		return action;
+	}
+
+
 	// public static void main(String[] args) {
 	//
 	// try {

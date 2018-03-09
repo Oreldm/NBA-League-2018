@@ -175,6 +175,7 @@ public class JDBC {
 		return res;
 	}
 
+
 	/**
 	 * Loads JDBC oracle driver and create connection with DB.
 	 * 

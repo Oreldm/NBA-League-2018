@@ -3,6 +3,8 @@ package Panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,6 +34,7 @@ public class Add_Player_Panel extends JPanel {
 		JLabel shirtNumbers = new JLabel("Shirt Number:");
 		JLabel position = new JLabel("Position:");
 		JLabel height = new JLabel("Height:");
+		JLabel weight = new JLabel("Weight:");
 		JLabel birthday = new JLabel("Birthday:");
 		JLabel region = new JLabel("Region:");
 		JLabel hireDate = new JLabel("Hire date:");
@@ -44,6 +47,7 @@ public class Add_Player_Panel extends JPanel {
 		JTextField jtfShirtNumbers = new JTextField();
 		JTextField jtfPosition = new JTextField();
 		JTextField jtfHeight = new JTextField();
+		JTextField jtfWeight = new JTextField();
 		JTextField jtfBirthday = new JTextField();
 		JTextField jtfRegion = new JTextField();
 		JTextField jtfHireDate = new JTextField();
@@ -67,6 +71,9 @@ public class Add_Player_Panel extends JPanel {
 		
 		panel.add(height);
 		panel.add(jtfHeight);
+		
+		panel.add(weight);
+		panel.add(jtfWeight);
 		
 		panel.add(birthday);
 		panel.add(jtfBirthday);
