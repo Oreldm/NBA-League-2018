@@ -57,7 +57,7 @@ public class Teams_Panel extends JPanel implements Paths_NBA {
 			temp.setAlignmentX(LEFT_ALIGNMENT);
 			temp.addMouseListener(Actions.clickLabelChangeColor(this));
 			//temp.addMouseListener(Actions.changeTo1TeamPanel(new JFrame(), tempTeam));
-			temp.setName("team_label");
+			temp.setName("TEAM$"+Integer.toString(tempTeam.id));
 			
 			panel.add(temp);
 			i++;

@@ -28,7 +28,7 @@ import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
-import Panels.ONE_Team_Panel;
+import Panels.One_Team_Panel;
 import Panels.Players_Panel;
 import Panels.Remove_Player_Panel;
 import Panels.Teams_Panel;
@@ -116,6 +116,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		};
 		return action;
 	}
+	
 
 	public static ActionListener changeToGamesPannel(JFrame frame, int homeTeam, int visitTeam) {
 		ActionListener action = new ActionListener() {
@@ -151,15 +152,15 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void actionPerformed(ActionEvent e) {
 				// using it because of massive data
 				String searchString;
-				try{
+				try {
 					searchString = ((Players_Panel) insidePanel).getTextFromSearch();
-				}catch(Exception e1){
+				} catch (Exception e1) {
 					searchString = ((Players_Panel) playersPanel).getTextFromSearch();
 				}
-				if(searchString.equals("Enter name for search:")){
-					searchString="";
+				if (searchString.equals("Enter name for search:")) {
+					searchString = "";
 				}
-				
+
 				ArrayList<String> result;
 				try {
 					if (searchString.equals("") && !isFirstTime) {
@@ -197,7 +198,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 	public static MouseListener clickLabelChangeColor(Component c) {
 		MouseListener action = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				System.out.println("hello123123");
 				Component c = e.getComponent();
 				c.setBackground(Color.GRAY);
 				((JComponent) c).setOpaque(true);
@@ -208,42 +208,58 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				c.setBackground(null);
 				((JComponent) c).setOpaque(true);
 			}
-			
-		public void mouseClicked(MouseEvent e) {
-			if (e.getComponent().getName().equals("player_label"))
-				System.out.println("player_label");
-			else if (e.getComponent().getName().contains("Mgmt_label")) {
-				System.out.println("mgmt_label");
-				String choice = ((JLabel) e.getComponent()).getName().substring(10);
-				System.out.println(choice);
-				System.out.println(((JLabel) e.getComponent()).getName());
-				if (insidePanel != null) {
-					totalFrame.remove(insidePanel);
+
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("TEST IS " + ((JLabel) e.getComponent()).getText());
+				System.out.println("TEST IS " + ((JLabel) e.getComponent()).getName());
+				if (e.getComponent().getName().equals("player_label"))
+					System.out.println("player_label");
+				else if (e.getComponent().getName().contains("Mgmt_label")) {
+					System.out.println("mgmt_label");
+					String choice = ((JLabel) e.getComponent()).getName().substring(10);
+					System.out.println(choice);
+					System.out.println(((JLabel) e.getComponent()).getName());
+					if (insidePanel != null) {
+						totalFrame.remove(insidePanel);
+					}
+					switch (choice) {
+					case "1":
+						insidePanel = new Add_USER_Panel();
+						break;
+					case "2":
+						insidePanel = new Add_Player_Panel();
+						break;
+					case "3":
+						insidePanel = new Remove_Player_Panel();
+						break;
+					case "4":
+						insidePanel = new Update_Player_Panel();
+						break;
+					case "5":
+						insidePanel = new Add_USER_Panel();
+						break;
+					case "6":
+						insidePanel = new Add_USER_Panel();
+						break;
+					default:
+						break;
+					}
+
+					totalFrame.add(insidePanel);
+					SwingUtilities.updateComponentTreeUI(totalFrame);
+				} else if (((JLabel) e.getComponent()).getName().contains("TEAM")) {
+					// Team Label
+					String teamId = ((JLabel) e.getComponent()).getName().split("\\$")[1];
+					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_TEAM", teamId,null);
+					if (insidePanel != null) {
+						totalFrame.remove(insidePanel);
+					}
+					insidePanel=new One_Team_Panel(result);
+					System.out.println(result);
+					totalFrame.add(insidePanel);
+					SwingUtilities.updateComponentTreeUI(totalFrame);
 				}
-				switch (choice) {
-				case "1": 	insidePanel = new Add_USER_Panel();
-							break;
-				case "2": 	insidePanel = new Add_Player_Panel();
-							break;		
-				case "3": 	insidePanel = new Remove_Player_Panel();
-							break;
-				case "4": 	insidePanel = new Update_Player_Panel();
-							break;
-				case "5": 	insidePanel = new Add_USER_Panel();
-							break;
-				case "6": 	insidePanel = new Add_USER_Panel();
-							break;	
-				default: 	break;	
-				}
-				
-				totalFrame.add(insidePanel);
-				SwingUtilities.updateComponentTreeUI(totalFrame);
 			}
-			else {
-					System.out.println("team_label");
-					System.out.println(((JLabel) e.getComponent()).getText());
-			}
-		}
 		};
 		return action;
 	}
@@ -264,30 +280,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
-	public static MouseListener changeTo1TeamPanel(JFrame frame, Team team) {
-		MouseListener action = new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// totalFrame = frame;
-				try {
-					new ONE_Team_Panel(team);
-					// if (insidePanel != null)
-					// frame.remove(insidePanel);
-					// insidePanel = new ONE_Team_Panel(team);
-					// frame.add(insidePanel, BorderLayout.CENTER);
-					// SwingUtilities.updateComponentTreeUI(frame);
-				} catch (HeadlessException e1) {
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		};
-		return action;
-	}
 
 	public static ActionListener changeToManagementPanel(JFrame frame) {
 		ActionListener action = new ActionListener() {

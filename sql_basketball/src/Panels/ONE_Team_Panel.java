@@ -1,84 +1,49 @@
 package Panels;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import nba_objects.Team;
-import utils.FilesUtils;
-import utils.ImagesGui;
-import utils.Paths_NBA;
-
-public class ONE_Team_Panel extends JPanel implements Paths_NBA {
-	private static final long serialVersionUID = 1L;
-
-	public ONE_Team_Panel(Team theTeam) throws HeadlessException, SQLException, IOException {
-		final JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createLineBorder(Color.red));
-		panel.setPreferredSize(new Dimension(800, 600));
-
-		final JScrollPane scroll = new JScrollPane(panel);
-		JLabel temp;
-		panel.setLayout(new GridLayout(15, 2));
-//		System.out.println(result.get(0));
-//		int i = 1;
-//		while (i < result.size()) {
-//			Team tempTeam = new Team(result.get(i));
-//			BufferedImage logo = null;
-//
-//			if (FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)
-//					&& FilesUtils.isFileDirectoryExists(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName))) {
-//				logo = ImageIO.read(new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
-//			} else {
-//				if (!FilesUtils.isDirectoryExists(TEAMS_IMAGES_CACHE)) {
-//					new File(TEAMS_IMAGES_CACHE).mkdir();
-//				}
-//				URL url = new URL(TEAMS_IMAGES_URL + tempTeam.logoFileName);
-//				logo = ImageIO.read(url);
-//				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
-//			}
-//
-//			logo = ImagesGui.resize(logo, 30, 30);
-//			ImageIcon imageIcon = new ImageIcon(logo);
-//
-//			temp = new JLabel(tempTeam.name + " " + tempTeam.nickname, imageIcon, SwingConstants.LEFT);
-//			temp.setBorder(BorderFactory.createLineBorder(Color.gray));
-//			temp.setAlignmentX(LEFT_ALIGNMENT);
-//			temp.addMouseListener(new MouseAdapter() {
-//				public void mouseClicked(MouseEvent e) {
-//					// you can open a new frame here as
-//					// i have assumed you have declared "frame" as instance variable
-//					panel.removeAll();
-//					System.out.println("hello");
-//					System.out.println("world");
-//					setSize(300, 300);
-//					setVisible(true);
-//				}
-//			});
-//			panel.add(temp);
-//			i++;
-//		}
+public class One_Team_Panel extends JPanel {
+	
+	public One_Team_Panel(ArrayList<String> result) {
+		this.setLayout(null);
 		
-		temp = new JLabel(theTeam.name + " " + theTeam.nickname);
-		temp.setBorder(BorderFactory.createLineBorder(Color.gray));
-		temp.setAlignmentX(LEFT_ALIGNMENT);
-		panel.add(temp);
-		System.out.println(theTeam);
-
-		setLayout(new BorderLayout());
-		add(scroll, BorderLayout.CENTER);
-		setSize(300, 300);
-		setVisible(true);
-		updateUI();
+		JLabel lblTeamname = new JLabel("Team_Name");
+		lblTeamname.setBounds(30, 32, 112, 39);
+		this.add(lblTeamname);
+		
+		JLabel lblPicture = new JLabel("Picture");
+		lblPicture.setBounds(30, 103, 131, 108);
+		this.add(lblPicture);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(219, 32, 197, 218);
+		this.add(scrollPane);
+		
+		JPanel panel_1 = new JPanel();
+		scrollPane.setViewportView(panel_1);
+		panel_1.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JLabel lblStats = new JLabel("Stats");
+		lblStats.setBounds(454, 44, 46, 14);
+		this.add(lblStats);
+		
+		JLabel lblTotalPoints = new JLabel("Total Points:");
+		lblTotalPoints.setBounds(454, 69, 112, 14);
+		this.add(lblTotalPoints);
+		
+		JLabel lblAssists = new JLabel("Assists:");
+		lblAssists.setBounds(454, 93, 63, 14);
+		this.add(lblAssists);
+		
+		JLabel lblDefensiveRebounds = new JLabel("Defensive rebounds:");
+		lblDefensiveRebounds.setBounds(454, 118, 112, 14);
+		this.add(lblDefensiveRebounds);
+		
 	}
 
 }

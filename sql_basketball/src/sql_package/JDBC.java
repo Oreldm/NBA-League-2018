@@ -208,4 +208,11 @@ public class JDBC {
 	}
 	
 
+//	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+//		Class.forName(SQL_DRIVER_NAME);
+//		Connection conn;
+//		conn = DriverManager.getConnection(URL, "oreltest", "1234");
+//		Statement state;
+//		state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//	}
 }
