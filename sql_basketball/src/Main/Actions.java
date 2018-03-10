@@ -24,6 +24,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+
 import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
 import Panels.Games_Panel_After_Search;
@@ -371,6 +373,35 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				
 				
 				}
+			}
+			
+		};
+		return action;
+	}
+
+
+	public static ActionListener searchPlayer() {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				ArrayList<String> result = new ArrayList<>();
+				String playerToSearch;
+				try {
+					playerToSearch = ((Update_Player_Panel) insidePanel).getPlayerToSearch();
+				} catch (Exception e1) {
+					playerToSearch = ((Update_Player_Panel) playersPanel).getPlayerToSearch();
+				}
+				result=jdbc.runDBFunction("CHECK_PLAYER_ID", playerToSearch);
+				System.out.println(result.get(0));
+				if (result.get(0).equals("0"))
+						((Update_Player_Panel) insidePanel).setStatus("Player not found!");
+				else {
+					((Update_Player_Panel) insidePanel).setStatus("Player found!");
+					((Update_Player_Panel) insidePanel).setEditableFalse();
+					((Update_Player_Panel) insidePanel).createSubPanel(((Update_Player_Panel) insidePanel).getSubPanel());
+				}
+						
 			}
 			
 		};

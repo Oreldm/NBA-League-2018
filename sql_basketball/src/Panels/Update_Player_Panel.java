@@ -15,18 +15,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import Main.Actions;
+
 public class Update_Player_Panel extends JPanel{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static boolean firstTime=true;
 	private final JTextField jtfSearch = new JTextField();
-
+	private final JLabel jlStatus = new JLabel();
+	private JPanel panel2 = new JPanel();
+	
 	public Update_Player_Panel() {
 		
 		JPanel panel = new JPanel();
-		JPanel panel2 = new JPanel();
+		//JPanel panel2 = new JPanel();
 		final JButton jbSearch = new JButton("Search");
 		final JLabel jlSearch = new JLabel("Enter Player ID:");
 		final JScrollPane scroll = new JScrollPane(panel);
@@ -34,18 +37,8 @@ public class Update_Player_Panel extends JPanel{
 		panel.add(jlSearch);
 		panel.add(jtfSearch);
 		panel.add(jbSearch);
-		jbSearch.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// if (id found) & firsttime=true
-				if (firstTime==true)
-					createSubPanel(panel2);
-				firstTime=false;
-				jtfSearch.setEditable(false);
-				
-			}
-		});
+		panel.add(jlStatus);
+		jbSearch.addActionListener(Actions.searchPlayer());
 		//createSubPanel();
 		
 		setLayout(new BorderLayout());
@@ -56,7 +49,7 @@ public class Update_Player_Panel extends JPanel{
 	}
 	
 	
-	private void createSubPanel(JPanel panel) {
+	public void createSubPanel(JPanel panel) {
 		//final JPanel panel = new JPanel();
 		
 		final JButton jbUpdatePlayer = new JButton("Update Player");
@@ -120,7 +113,20 @@ public class Update_Player_Panel extends JPanel{
 
 		
 	}
-
+	public void setStatus(String txt) {
+		jlStatus.setText(txt);
+	}
+	
+	public String getPlayerToSearch() {
+		return jtfSearch.getText();
+	}
+	public void setEditableFalse() {
+		jtfSearch.setEditable(false);
+	}
+	
+	public JPanel getSubPanel(){
+		return panel2;
+	}
 
 //	public static void main(String[] args) {
 //		JFrame frame = new JFrame();
