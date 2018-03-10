@@ -159,20 +159,21 @@ public class JDBC {
 	 *            LOCATION_ID,STREET_ADDRESS,POSTAL_CODE,CITY,STATE_PROVINCE,COUNTRY_ID
 	 *            "INSERT_ROW","'LOCATIONS','11,''HAMESILA'',37000,''TEL-AVIV'',''YAYA'',''AR'''"
 	 */
-	public String runDBProcedure(String procedureName, String inputVariables) {
-		String res = null;
+	public int runDBProcedure(String procedureName, String inputVariables) {
+		int errorCode=0;
 		try {
 			System.out.println("{call " + procedureName + "(" + inputVariables + ")}");
 			CallableStatement cs = connection.prepareCall("{call " + procedureName + "(" + inputVariables + ")}");
 			cs.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			res = e.getMessage();
-			StringWriter errors = new StringWriter();
-			e.printStackTrace(new PrintWriter(errors));
+			//e.printStackTrace();
+			errorCode = e.getErrorCode();
+			//StringWriter errors = new StringWriter();
+			//e.printStackTrace(new PrintWriter(errors));
+			System.out.println("CODE= "+ e.getErrorCode());
 		}
 
-		return res;
+		return errorCode;
 	}
 
 

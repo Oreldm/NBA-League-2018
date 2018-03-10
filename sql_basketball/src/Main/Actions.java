@@ -320,14 +320,26 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void actionPerformed(ActionEvent e) {
 				// using it because of massive data
 				String playerId;
+				int errorCode;
 				try {
 					playerId = ((Remove_Player_Panel) insidePanel).getLabelText();
 				} catch (Exception e1) {
 					playerId = ((Remove_Player_Panel) playersPanel).getLabelText();
 				}
 				System.out.println("CHECK=" + playerId);
-				jdbc.runDBProcedure("DELETE_PLAYER", playerId);
-				System.out.println("Success");
+				errorCode=jdbc.runDBProcedure("DELETE_PLAYER", playerId);
+				System.out.println("----");
+				switch (errorCode) {
+				case 0: 	((Remove_Player_Panel) insidePanel).setStatus("Success!");
+							break;
+				case 20002: ((Remove_Player_Panel) insidePanel).setStatus("Player not found");
+							break;
+				default: 	((Remove_Player_Panel) insidePanel).setStatus("Awkward error");
+							break;
+				
+				
+				}
+				//System.out.println("Success");
 			}
 		};
 		return action;
