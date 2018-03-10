@@ -49,11 +49,11 @@ public class One_Player_Panel extends JPanel implements Paths_NBA {
 			playerPicture = ImageIO.read(new File(PLAYERS_IMAGES_CACHE + "\\unknown.png"));
 		}
 
-		playerPicture = ImagesGui.resize(playerPicture, 200, 200);
+		playerPicture = ImagesGui.resize(playerPicture, 300, 300);
 		imageIcon = new ImageIcon(playerPicture);
 
 		JLabel lblPicture = new JLabel(imageIcon);
-		lblPicture.setBounds(500, 52, 212, 170);
+		lblPicture.setBounds(500, 52, 300, 300);
 		this.add(lblPicture);
 		// END - PICTURE
 

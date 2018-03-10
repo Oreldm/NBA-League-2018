@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,6 +32,8 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static JScrollPane scrollPane;
 
 	@SuppressWarnings("static-access")
 	public One_Team_Panel(ArrayList<String> result) throws IOException, HeadlessException, SQLException {
@@ -66,12 +69,44 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		lblPicture.setAlignmentY(lblPicture.TOP_ALIGNMENT);
 		this.add(lblPicture);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(215, 52, 197, 258);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(345, 52, 197, 258);
 		this.add(scrollPane);
 
-		ArrayList<String> players = Actions.jdbc.runDBFunctionTableTypeReturn(GET_PLAYER_BYTEAMID, ""+tempTeam.id, PLAYERS_TYPE);
-//		Players_Panel playersPanel = new Players_Panel(players);
+		JPanel playersPanel = getPlayersSortedByPointsDown(tempTeam);
+		
+		scrollPane.setViewportView(playersPanel);
+		
+
+		JLabel lblStats = new JLabel("Stats");
+		lblStats.setBounds(560, 44, 46, 14);
+		this.add(lblStats);
+
+		JLabel lblTotalPoints = new JLabel("Total Points:");
+		lblTotalPoints.setBounds(560, 69, 112, 14);
+		this.add(lblTotalPoints);
+
+		JLabel lblAssists = new JLabel("Assists:");
+		lblAssists.setBounds(560, 93, 63, 14);
+		this.add(lblAssists);
+
+		JLabel lblDefensiveRebounds = new JLabel("Defensive rebounds:");
+		lblDefensiveRebounds.setBounds(560, 118, 170, 14);
+		this.add(lblDefensiveRebounds);
+
+		
+		
+		JButton byNumber = new JButton("By Number");
+		byNumber.setBounds(220, 118, 120, 30);
+		this.add(byNumber);
+		
+		JButton byPoints = new JButton("By Points");
+		byPoints.setBounds(220, 158, 120, 30);
+		this.add(byPoints);
+	}
+	
+	public static JPanel getPlayersSortedByNumbers(Team team) {
+		ArrayList<String> players = Actions.jdbc.runDBFunctionTableTypeReturn(GET_PLAYER_BYTEAMID_BY_NUMBER_SORT, ""+team.id, PLAYERS_TYPE);
 		JPanel playersPanel = new JPanel();
 		playersPanel.setLayout(new GridLayout(players.size(), 0));
 		for(String str : players) {
@@ -83,26 +118,23 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 				//not a player
 			}
 		}
-		
-		scrollPane.setViewportView(playersPanel);
-		
-
-		JLabel lblStats = new JLabel("Stats");
-		lblStats.setBounds(454, 44, 46, 14);
-		this.add(lblStats);
-
-		JLabel lblTotalPoints = new JLabel("Total Points:");
-		lblTotalPoints.setBounds(454, 69, 112, 14);
-		this.add(lblTotalPoints);
-
-		JLabel lblAssists = new JLabel("Assists:");
-		lblAssists.setBounds(454, 93, 63, 14);
-		this.add(lblAssists);
-
-		JLabel lblDefensiveRebounds = new JLabel("Defensive rebounds:");
-		lblDefensiveRebounds.setBounds(454, 118, 112, 14);
-		this.add(lblDefensiveRebounds);
-
+		return playersPanel;
+	}
+	
+	public static JPanel getPlayersSortedByPointsDown(Team team) {
+		JPanel playersPanel = new JPanel();
+		ArrayList<String> playersByPoints = Actions.jdbc.runDBFunction("PLAYER_BYTEAMID_POINTS_DOWN", team.id+"','1");
+		playersPanel.setLayout(new GridLayout(playersByPoints.size(), 0));
+		for(int i=1;i<playersByPoints.size();i++) {
+			String playerId = playersByPoints.get(i).split(",")[1];
+			String points = playersByPoints.get(i).split(",")[2];
+			ArrayList<String> player = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BY_ID", playerId, null);
+			Player tempPlayer= new Player(player.get(1),1);
+			System.out.println(tempPlayer.firstName);
+			JLabel tempLabel = new JLabel(tempPlayer.toString() +" POINTS : " +points);
+			playersPanel.add(tempLabel);
+		}
+		return playersPanel;
 	}
 
 }

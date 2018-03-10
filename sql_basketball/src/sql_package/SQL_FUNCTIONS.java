@@ -7,6 +7,6 @@ public interface SQL_FUNCTIONS {
 	final static String GET_GAMES = "GET_GAMES";
 	final static String GET_TEAM = "GET_TEAM";
 	final static String ALL = "";
-	final static String GET_PLAYER_BYTEAMID="GET_PLAYER_BYTEAMID";
+	final static String GET_PLAYER_BYTEAMID_BY_NUMBER_SORT="GET_PLAYER_BYTEAMID";
 
 }
