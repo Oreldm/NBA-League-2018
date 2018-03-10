@@ -214,7 +214,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				System.out.println("TEST IS " + ((JLabel) e.getComponent()).getName());
 				if (e.getComponent().getName().contains("player_label")) {
 					String playerId = ((JLabel) e.getComponent()).getName().split("\\$")[1];
-					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_TEAM", playerId, null);
+					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BY_ID", playerId, null);
 					if (insidePanel != null) {
 						totalFrame.remove(insidePanel);
 					}

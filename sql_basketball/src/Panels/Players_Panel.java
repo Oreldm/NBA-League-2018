@@ -44,7 +44,7 @@ public class Players_Panel extends JPanel implements Paths_NBA {
 
 		int i = 0;
 		while (i < result.size()) {
-			Player tempPlayer = new Player(result.get(i));
+			Player tempPlayer = new Player(result.get(i),0);
 			BufferedImage playerPicture = null;
 
 			ImageIcon imageIcon;

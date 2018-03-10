@@ -76,7 +76,7 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		playersPanel.setLayout(new GridLayout(players.size(), 0));
 		for(String str : players) {
 			try {
-				Player tempPlayer = new Player(str);
+				Player tempPlayer = new Player(str,0);
 				JLabel tempLabel = new JLabel(tempPlayer.toString());
 				playersPanel.add(tempLabel);
 			}catch(Exception e) {
