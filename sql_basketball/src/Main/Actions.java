@@ -116,7 +116,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		};
 		return action;
 	}
-	
 
 	public static ActionListener changeToGamesPannel(JFrame frame, int homeTeam, int visitTeam) {
 		ActionListener action = new ActionListener() {
@@ -250,11 +249,15 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} else if (((JLabel) e.getComponent()).getName().contains("TEAM")) {
 					// Team Label
 					String teamId = ((JLabel) e.getComponent()).getName().split("\\$")[1];
-					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_TEAM", teamId,null);
+					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_TEAM", teamId, null);
 					if (insidePanel != null) {
 						totalFrame.remove(insidePanel);
 					}
-					insidePanel=new One_Team_Panel(result);
+					try {
+						insidePanel = new One_Team_Panel(result);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 					System.out.println(result);
 					totalFrame.add(insidePanel);
 					SwingUtilities.updateComponentTreeUI(totalFrame);
@@ -279,7 +282,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		};
 		return action;
 	}
-
 
 	public static ActionListener changeToManagementPanel(JFrame frame) {
 		ActionListener action = new ActionListener() {
@@ -309,14 +311,13 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} catch (Exception e1) {
 					playerId = ((Remove_Player_Panel) playersPanel).getLabelText();
 				}
-				System.out.println("CHECK="+playerId);
+				System.out.println("CHECK=" + playerId);
 				jdbc.runDBProcedure("DELETE_PLAYER", playerId);
 				System.out.println("Success");
 			}
 		};
 		return action;
 	}
-
 
 	// public static void main(String[] args) {
 	//

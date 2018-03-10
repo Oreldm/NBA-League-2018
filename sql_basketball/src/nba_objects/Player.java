@@ -39,4 +39,10 @@ public class Player {
 		
 	}
 	
+	@Override
+	public String toString() {
+		String strToReturn="#"+shirtNumber+ " " +firstName + " "+ lastName;
+		return strToReturn;
+	}
+	
 }
