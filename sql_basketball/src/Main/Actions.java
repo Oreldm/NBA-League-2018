@@ -345,6 +345,38 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
+	public static ActionListener AddPlayer() {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int errorCode;
+				String playerData;
+				try {
+					playerData = ((Add_Player_Panel) insidePanel).getData();
+				} catch (Exception e1) {
+					playerData = ((Add_Player_Panel) playersPanel).getData();
+				}
+				playerData=playerData.replace(", ,", ", NULL,");
+				playerData=playerData.replace(", ,", ", NULL,");
+				System.out.println(playerData);
+				errorCode=jdbc.runDBProcedure("ADD_PLAYER", playerData);
+				switch (errorCode) {
+				case 0: 	((Add_Player_Panel) insidePanel).setStatus("Success!");
+							break;
+				case 20002: ((Add_Player_Panel) insidePanel).setStatus("ou have tried to insert a  duplicate playerID");
+							break;
+				default: 	((Add_Player_Panel) insidePanel).setStatus("Awkward error");
+							break;
+				
+				
+				}
+			}
+			
+		};
+		return action;
+	}
+
 	// public static void main(String[] args) {
 	//
 	// try {

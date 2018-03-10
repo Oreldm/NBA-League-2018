@@ -20,7 +20,7 @@ import Main.Actions;
 public class Remove_Player_Panel extends JPanel{
 //	private String GUEST = "Guest";
 //	private String ADMIN = "Administrator";
-	private static JLabel jlStatus = new JLabel("check");
+	private static JLabel jlStatus = new JLabel("");
 	private JTextField jtfUsername;
 	public Remove_Player_Panel() {
 		final JPanel panel = new JPanel();
