@@ -28,6 +28,7 @@ import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
+import Panels.One_Player_Panel;
 import Panels.One_Team_Panel;
 import Panels.Players_Panel;
 import Panels.Remove_Player_Panel;
@@ -211,9 +212,22 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("TEST IS " + ((JLabel) e.getComponent()).getText());
 				System.out.println("TEST IS " + ((JLabel) e.getComponent()).getName());
-				if (e.getComponent().getName().equals("player_label"))
-					System.out.println("player_label");
-				else if (e.getComponent().getName().contains("Mgmt_label")) {
+				if (e.getComponent().getName().contains("player_label")) {
+					String playerId = ((JLabel) e.getComponent()).getName().split("\\$")[1];
+					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn("GET_TEAM", playerId, null);
+					if (insidePanel != null) {
+						totalFrame.remove(insidePanel);
+					}
+					try {
+						insidePanel = new One_Player_Panel(result);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					System.out.println(result);
+					totalFrame.add(insidePanel);
+					SwingUtilities.updateComponentTreeUI(totalFrame);
+					
+				}else if (e.getComponent().getName().contains("Mgmt_label")) {
 					System.out.println("mgmt_label");
 					String choice = ((JLabel) e.getComponent()).getName().substring(10);
 					System.out.println(choice);
