@@ -368,8 +368,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;
 				case 20002: ((Add_Player_Panel) insidePanel).setStatus("You have tried to insert a duplicate playerID");
 							break;
-				case 20003: ((Add_Player_Panel) insidePanel).setStatus("Constraint violated error");
-							break;
 				default: 	((Add_Player_Panel) insidePanel).setStatus("Awkward error");
 							break;
 				
@@ -383,8 +381,9 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 
 
 	public static ActionListener searchPlayer() {
+		
 		ActionListener action = new ActionListener() {
-
+			private boolean firstTime=true;
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<String> result = new ArrayList<>();
@@ -401,11 +400,44 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				else {
 					((Update_Player_Panel) insidePanel).setStatus("Player found!");
 					((Update_Player_Panel) insidePanel).setEditableFalse();
-					((Update_Player_Panel) insidePanel).createSubPanel(((Update_Player_Panel) insidePanel).getSubPanel());
+					if (firstTime){
+						((Update_Player_Panel) insidePanel).createSubPanel(((Update_Player_Panel) insidePanel).getSubPanel());
+						firstTime=false;
+					}
 				}
 						
 			}
 			
+		};
+		return action;
+	}
+
+	public static ActionListener updatePlayer() {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int errorCode;
+				String playerData;
+				try {
+					playerData = ((Update_Player_Panel) insidePanel).getData();
+				} catch (Exception e1) {
+					playerData = ((Update_Player_Panel) playersPanel).getData();
+				}
+				System.out.println(playerData);
+				errorCode=jdbc.runDBProcedure("UPDATE_PLAYER", playerData);
+				switch (errorCode) {
+				case 0:		System.out.println("Success!");
+				 			break;
+				case 20001: System.out.println("invalid shirt number");;
+							break;
+				case 20002: System.out.println("team not exists");
+							break;
+				default: 	System.out.println("Awkward error");
+							break;
+				}
+			}
 		};
 		return action;
 	}

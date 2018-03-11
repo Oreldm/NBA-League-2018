@@ -25,6 +25,9 @@ public class Update_Player_Panel extends JPanel{
 	private final JTextField jtfSearch = new JTextField();
 	private final JLabel jlStatus = new JLabel();
 	private JPanel panel2 = new JPanel();
+	private JTextField jtfShirtNumbers = new JTextField();
+	private JTextField jtfSalary = new JTextField();
+	private JTextField jtfTeamId = new JTextField();
 	
 	public Update_Player_Panel() {
 		
@@ -56,57 +59,30 @@ public class Update_Player_Panel extends JPanel{
 		panel.setBorder(BorderFactory.createLineBorder(Color.red));
 		panel.setLayout(new GridLayout(0, 2, 1, 1));
 
-		JLabel firstName = new JLabel("First Name:");
-		JLabel lastName = new JLabel("Last Name:");
+//		JLabel firstName = new JLabel("First Name:");
+//		JLabel lastName = new JLabel("Last Name:");
 		JLabel shirtNumbers = new JLabel("Shirt Number:");
-		JLabel position = new JLabel("Position:");
-		JLabel height = new JLabel("Height:");
-		JLabel birthday = new JLabel("Birthday:");
-		JLabel region = new JLabel("Region:");
-		JLabel hireDate = new JLabel("Hire date:");
+//		JLabel position = new JLabel("Position:");
+//		JLabel height = new JLabel("Height:");
+//		JLabel birthday = new JLabel("Birthday:");
+//		JLabel region = new JLabel("Region:");
+//		JLabel hireDate = new JLabel("Hire date:");
 		JLabel salary = new JLabel("Salary:");
 		JLabel teamId = new JLabel("Team ID:");
 
-		JTextField jtfFirstName = new JTextField();
-		JTextField jtfLastName = new JTextField();
-		JTextField jtfShirtNumbers = new JTextField();
-		JTextField jtfPosition = new JTextField();
-		JTextField jtfHeight = new JTextField();
-		JTextField jtfBirthday = new JTextField();
-		JTextField jtfRegion = new JTextField();
-		JTextField jtfHireDate = new JTextField();
-		JTextField jtfSalary = new JTextField();
-		JTextField jtfTeamId = new JTextField();
-
-		panel.add(firstName);
-		panel.add(jtfFirstName);
-
-		panel.add(lastName);
-		panel.add(jtfLastName);
 
 		panel.add(shirtNumbers);
 		panel.add(jtfShirtNumbers);
 
-		panel.add(position);
-		panel.add(jtfPosition);
-
-		panel.add(height);
-		panel.add(jtfHeight);
-
-		panel.add(birthday);
-		panel.add(jtfBirthday);
-
-		panel.add(region);
-		panel.add(jtfRegion);
-
-		panel.add(hireDate);
-		panel.add(jtfHireDate);
 
 		panel.add(salary);
 		panel.add(jtfSalary);
 
 		panel.add(teamId);
 		panel.add(jtfTeamId);
+		
+		jbUpdatePlayer.addActionListener(Actions.updatePlayer());
+		
 		
 		add(jbUpdatePlayer, BorderLayout.SOUTH);
 		updateUI();
@@ -126,6 +102,14 @@ public class Update_Player_Panel extends JPanel{
 	
 	public JPanel getSubPanel(){
 		return panel2;
+	}
+	
+	public String getData() {
+		String field1, field2, field3;
+		field1=(jtfShirtNumbers.getText().equals("")) ? "NULL" : jtfShirtNumbers.getText();
+		field2=(jtfSalary.getText().equals("")) ? "NULL" : jtfSalary.getText();
+		field3=(jtfTeamId.getText().equals("")) ? "NULL" : jtfTeamId.getText();
+		return jtfSearch.getText()+", "+field1+", "+field2+", "+field3;
 	}
 
 //	public static void main(String[] args) {
