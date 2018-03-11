@@ -12,11 +12,11 @@ public class Team {
 	
 	public Team(String teamStr) {
 		String[]teamArr= teamStr.split(",");
-		this.id=Integer.parseInt(teamArr[1]);
+		this.id=parseInt(teamArr[1]);
 		this.name=teamArr[2];
 		this.nickname=teamArr[3];
-		this.championshipment=Integer.parseInt(teamArr[4]);
-		this.leagueplace=Integer.parseInt(teamArr[5]);
+		this.championshipment=parseInt(teamArr[4]);
+		this.leagueplace=parseInt(teamArr[5]);
 		this.homeSuit=teamArr[6];
 		this.visitSuit=teamArr[7];
 		this.logoFileName=teamArr[8];
@@ -27,6 +27,14 @@ public class Team {
 		return "Team [id=" + id + ", name=" + name + ", nickname=" + nickname + ", championshipment=" + championshipment
 				+ ", leagueplace=" + leagueplace + ", homeSuit=" + homeSuit + ", visitSuit=" + visitSuit
 				+ ", logoFileName=" + logoFileName + "]";
+	}
+	
+	private int parseInt(String number) {
+		try {
+			return Integer.parseInt(number);
+		}catch(Exception e) {
+			return 0;
+		}
 	}
 	
 	

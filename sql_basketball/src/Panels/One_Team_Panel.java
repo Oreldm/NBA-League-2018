@@ -43,6 +43,8 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 	public static JScrollPane scrollPane;
 	static JPanel playersPanel;
 	static Team tempTeam;
+	private static int GAP=15;
+	private static int firstStatsPixel=10;
 	
 	public One_Team_Panel(ArrayList<String> result) throws IOException, HeadlessException, SQLException {
 		tempTeam = new Team(result.get(1));
@@ -91,21 +93,64 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		
 
 		JLabel lblStats = new JLabel("Stats");
-		lblStats.setBounds(560, 44, 46, 14);
+		lblStats.setBounds(560, firstStatsPixel, 46, 14);
 		this.add(lblStats);
+		
+		ArrayList<String> stats = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM_STATS", ""+tempTeam.id, "TEAM_STATS_TABLE");
+		System.out.println(stats.get(0));
+		String[] statsArr =stats.get(0).split(",");
 
-		JLabel lblTotalPoints = new JLabel("Total Points:");
-		lblTotalPoints.setBounds(560, 69, 112, 14);
+		JLabel lblTotalPoints = new JLabel("Total Points: "+statsArr[0]);
+		lblTotalPoints.setBounds(560, firstStatsPixel+GAP*2, 170, 14);
 		this.add(lblTotalPoints);
 
-		JLabel lblAssists = new JLabel("Assists:");
-		lblAssists.setBounds(560, 93, 63, 14);
+		JLabel lblPointPerGame = new JLabel("Points Per Game: "+statsArr[1]);
+		lblPointPerGame.setBounds(560, firstStatsPixel+GAP*3, 170, 14);
+		this.add(lblPointPerGame);
+
+		JLabel lbl1PointPrecent = new JLabel("1-Point precent: "+statsArr[2]+"%");
+		lbl1PointPrecent.setBounds(560, firstStatsPixel+GAP*4, 170, 14);
+		this.add(lbl1PointPrecent);
+		
+		JLabel lbl2PointPrecent = new JLabel("2-Point precent: "+statsArr[3]+"%");
+		lbl2PointPrecent.setBounds(560, firstStatsPixel+GAP*5, 170, 14);
+		this.add(lbl2PointPrecent);
+		
+		JLabel lbl3PointPrecent = new JLabel("3-Point precent: "+statsArr[4]+"%");
+		lbl3PointPrecent.setBounds(560, firstStatsPixel+GAP*6, 170, 14);
+		this.add(lbl3PointPrecent);
+		
+		JLabel lblAssists = new JLabel("Assists: "+statsArr[5]);
+		lblAssists.setBounds(560, firstStatsPixel+GAP*7, 170, 14);
 		this.add(lblAssists);
-
-		JLabel lblDefensiveRebounds = new JLabel("Defensive rebounds:");
-		lblDefensiveRebounds.setBounds(560, 118, 170, 14);
+		
+		JLabel lblAssistsPerGame = new JLabel("Assists per game: "+statsArr[6]);
+		lblAssistsPerGame.setBounds(560, firstStatsPixel+GAP*8, 170, 14);
+		this.add(lblAssistsPerGame);
+		
+		JLabel lblDefensiveRebounds = new JLabel("Rebounds: "+statsArr[7]);
+		lblDefensiveRebounds.setBounds(560, firstStatsPixel+GAP*9, 170, 14);
 		this.add(lblDefensiveRebounds);
+		
+		JLabel lblDefensiveReboundsPerGame = new JLabel("Rebounds per Game: "+statsArr[8]);
+		lblDefensiveReboundsPerGame.setBounds(560, firstStatsPixel+GAP*10, 170, 14);
+		this.add(lblDefensiveReboundsPerGame);
+		
+		JLabel lblTotalFouls = new JLabel("Total Fouls: "+statsArr[9]);
+		lblTotalFouls.setBounds(560, firstStatsPixel+GAP*11, 170, 14);
+		this.add(lblTotalFouls);
+		
+		JLabel lblFoulsPerGame = new JLabel("Fouls per game: "+statsArr[10]);
+		lblFoulsPerGame.setBounds(560, firstStatsPixel+GAP*12, 170, 14);
+		this.add(lblFoulsPerGame);
+		
+		JLabel lblLossBall = new JLabel("Loss Ball: "+statsArr[11]);
+		lblLossBall.setBounds(560, firstStatsPixel+GAP*13, 170, 14);
+		this.add(lblLossBall);
 
+		JLabel lblLossBallPerGame = new JLabel("Loss Ball per game: "+statsArr[12]);
+		lblLossBallPerGame.setBounds(560, firstStatsPixel+GAP*14, 170, 14);
+		this.add(lblLossBallPerGame);
 		
 		
 		JButton byNumber = new JButton("By Number");
@@ -145,7 +190,7 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 			ArrayList<String> player = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BY_ID", playerId, null);
 			Player tempPlayer= new Player(player.get(1),1);
 			System.out.println(tempPlayer.firstName);
-			JLabel tempLabel = new JLabel(tempPlayer.toString() +" POINTS : " +points);
+			JLabel tempLabel = new JLabel(tempPlayer.toString() +" [POINTS : " +points+"]");
 			playersPanel.add(tempLabel);
 		}
 		return playersPanel;
@@ -161,14 +206,13 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 			ArrayList<String> player = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BY_ID", playerId, null);
 			Player tempPlayer= new Player(player.get(1),1);
 			System.out.println(tempPlayer.firstName);
-			JLabel tempLabel = new JLabel(tempPlayer.toString() +" POINTS : " +points);
+			JLabel tempLabel = new JLabel(tempPlayer.toString() +" POINTS : [" +points+"]");
 			playersPanel.add(tempLabel);
 		}
 		return playersPanel;
 	}
 	
-	private static int i=0; //if 0->by number  ,  1->points down ,  2->points up
-	
+	private static int i=0; //1->points down ,  0->points up
 	
 	public ActionListener changePanel(One_Team_Panel panel, int number) {
 		ActionListener action = new ActionListener() {
@@ -178,6 +222,7 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 				panel.removeAll();
 				scrollPane.remove(panel);
 				switch(number) {
+				//if 2->by number  ,  1->points down ,  0->points up
 					case 2:
 						playersPanel=getPlayersSortedByNumbers(tempTeam);
 							break;
@@ -193,7 +238,7 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 					if (Actions.insidePanel != null) {
 						Actions.totalFrame.remove(Actions.totalFrame);
 					}
-					Actions.insidePanel =panel;
+					Actions.insidePanel=panel;
 					Actions.totalFrame.add(Actions.insidePanel);
 					SwingUtilities.updateComponentTreeUI(Actions.totalFrame);
 				} catch (IOException e1) {

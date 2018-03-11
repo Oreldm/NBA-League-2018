@@ -19,24 +19,40 @@ public class Player {
 	public Player(String playerStr, int i) {
 		String[]playerArr= playerStr.split(",");
 		System.out.println(playerStr);
-		this.playerid=Integer.parseInt(playerArr[0+i]);
+		this.playerid=parseInt(playerArr[0+i]);
 		this.firstName=playerArr[1+i];
 		this.lastName=playerArr[2+i];
-		this.shirtNumber=Integer.parseInt(playerArr[3+i]);
+		this.shirtNumber=parseInt(playerArr[3+i]);
 		this.position=playerArr[4+i];
-		this.height=Double.parseDouble(playerArr[5+i]);
-		this.weight=Double.parseDouble(playerArr[6+i]);
+		this.height=parseDouble(playerArr[5+i]);
+		this.weight=parseDouble(playerArr[6+i]);
 		this.birthday=playerArr[7+i];
 		this.region=playerArr[8+i];
 		this.hireDate=playerArr[9+i];
-		this.salary=Integer.parseInt(playerArr[10+i]);
-		this.teamid=Integer.parseInt(playerArr[11+i]);
+		this.salary=parseInt(playerArr[10+i]);
+		this.teamid=parseInt(playerArr[11+i]);
 		try {
 			this.picture=playerArr[12+i];
 		}catch(ArrayIndexOutOfBoundsException e) {
 			this.picture="https://www.esportsearnings.com/images/unknown_player.png";
 		}
 		
+	}
+	
+	private int parseInt(String number) {
+		try {
+			return Integer.parseInt(number);
+		}catch(Exception e) {
+			return 0;
+		}
+	}
+	
+	private double parseDouble(String number) {
+		try {
+			return Double.parseDouble(number);
+		}catch(Exception e) {
+			return 0;
+		}
 	}
 	
 	@Override
