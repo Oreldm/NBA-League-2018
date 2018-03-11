@@ -366,7 +366,9 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				switch (errorCode) {
 				case 0: 	((Add_Player_Panel) insidePanel).setStatus("Success!");
 							break;
-				case 20002: ((Add_Player_Panel) insidePanel).setStatus("ou have tried to insert a  duplicate playerID");
+				case 20002: ((Add_Player_Panel) insidePanel).setStatus("You have tried to insert a duplicate playerID");
+							break;
+				case 20003: ((Add_Player_Panel) insidePanel).setStatus("Constraint violated error");
 							break;
 				default: 	((Add_Player_Panel) insidePanel).setStatus("Awkward error");
 							break;
