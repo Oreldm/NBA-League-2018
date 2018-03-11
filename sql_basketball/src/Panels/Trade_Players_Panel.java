@@ -30,8 +30,8 @@ public class Trade_Players_Panel extends JPanel {
 	private final JList<String> jlPlayers1 = new JList<>(model1);
 	private final JList<String> jlPlayers2 = new JList<>(model2);
 	private JButton jbTrade = new JButton("Trade");
-	private final JPanel panel2 = new JPanel();
-	private final JScrollPane scroll = new JScrollPane(panel2);
+	private JPanel panel2 = new JPanel();
+	private JScrollPane scroll = new JScrollPane(panel2);
 	
 	private static final long serialVersionUID = 1L;
 

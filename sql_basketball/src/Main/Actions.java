@@ -495,14 +495,15 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				System.out.println("Player1: "+playerOne + " PlayerTwo: " + playerTwo);
 				errorCode=jdbc.runDBProcedure("TRADE_PLAYERS", "'"+playerOne + "', '"+ playerTwo+"'");
 				switch (errorCode) {
-				case 0:		((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success!");
+				case 0:		((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success! Please refresh the UI");
 	 						break;
 				case 20001:
 				default:	((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Please select players!");
 							break;
 				}
-				((Trade_Players_Panel) insidePanel).getTeams();
-				Actions.getPlayers(((Trade_Players_Panel) insidePanel).getAllTeamsId());
+//				((Trade_Players_Panel) insidePanel).getTeams();
+//				Actions.getPlayers(((Trade_Players_Panel) insidePanel).getAllTeamsId());
+//				((Trade_Players_Panel) insidePanel).getPanel2().updateUI();
 			}
 			
 		};

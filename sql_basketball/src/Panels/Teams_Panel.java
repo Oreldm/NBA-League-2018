@@ -29,7 +29,7 @@ public class Teams_Panel extends JPanel implements Paths_NBA {
 
 		final JScrollPane scroll = new JScrollPane(panel);
 		JLabel temp;
-		panel.setLayout(new GridLayout(15, 2));
+		panel.setLayout(new GridLayout(0, 2));
 		System.out.println(result.get(0));
 		int i = 1;
 		while (i < result.size()) {
