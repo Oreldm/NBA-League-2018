@@ -72,8 +72,15 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 				new File(TEAMS_IMAGES_CACHE).mkdir();
 			}
 			URL url = new URL(TEAMS_IMAGES_URL + tempTeam.logoFileName);
-			logo = ImageIO.read(url);
-			ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
+			try {
+				logo = ImageIO.read(url);
+				
+				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
+				}catch(Exception e) {
+					url = new URL("https://yt3.ggpht.com/-p7dRfvM60F8/AAAAAAAAAAI/AAAAAAAAAAA/fzDL1FonNCU/s900-c-k-no-mo-rj-c0xffffff/photo.jpg");
+					logo= ImageIO.read(url);
+					
+				}
 		}
 		logo = ImagesGui.resize(logo, 200, 200);
 		ImageIcon imageIcon = new ImageIcon(logo);
@@ -100,55 +107,55 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		System.out.println(stats.get(0));
 		String[] statsArr =stats.get(0).split(",");
 
-		JLabel lblTotalPoints = new JLabel("Total Points: "+statsArr[0]);
+		JLabel lblTotalPoints = new JLabel("Total Points: "+getStrFromArr(statsArr,0));
 		lblTotalPoints.setBounds(560, firstStatsPixel+GAP*2, 170, 14);
 		this.add(lblTotalPoints);
 
-		JLabel lblPointPerGame = new JLabel("Points Per Game: "+statsArr[1]);
+		JLabel lblPointPerGame = new JLabel("Points Per Game: "+getStrFromArr(statsArr,1));
 		lblPointPerGame.setBounds(560, firstStatsPixel+GAP*3, 170, 14);
 		this.add(lblPointPerGame);
 
-		JLabel lbl1PointPrecent = new JLabel("1-Point precent: "+statsArr[2]+"%");
+		JLabel lbl1PointPrecent = new JLabel("1-Point precent: "+getStrFromArr(statsArr,2)+"%");
 		lbl1PointPrecent.setBounds(560, firstStatsPixel+GAP*4, 170, 14);
 		this.add(lbl1PointPrecent);
 		
-		JLabel lbl2PointPrecent = new JLabel("2-Point precent: "+statsArr[3]+"%");
+		JLabel lbl2PointPrecent = new JLabel("2-Point precent: "+getStrFromArr(statsArr,3)+"%");
 		lbl2PointPrecent.setBounds(560, firstStatsPixel+GAP*5, 170, 14);
 		this.add(lbl2PointPrecent);
 		
-		JLabel lbl3PointPrecent = new JLabel("3-Point precent: "+statsArr[4]+"%");
+		JLabel lbl3PointPrecent = new JLabel("3-Point precent: "+getStrFromArr(statsArr,4)+"%");
 		lbl3PointPrecent.setBounds(560, firstStatsPixel+GAP*6, 170, 14);
 		this.add(lbl3PointPrecent);
 		
-		JLabel lblAssists = new JLabel("Assists: "+statsArr[5]);
+		JLabel lblAssists = new JLabel("Assists: "+getStrFromArr(statsArr,5));
 		lblAssists.setBounds(560, firstStatsPixel+GAP*7, 170, 14);
 		this.add(lblAssists);
 		
-		JLabel lblAssistsPerGame = new JLabel("Assists per game: "+statsArr[6]);
+		JLabel lblAssistsPerGame = new JLabel("Assists per game: "+getStrFromArr(statsArr,6));
 		lblAssistsPerGame.setBounds(560, firstStatsPixel+GAP*8, 170, 14);
 		this.add(lblAssistsPerGame);
 		
-		JLabel lblDefensiveRebounds = new JLabel("Rebounds: "+statsArr[7]);
+		JLabel lblDefensiveRebounds = new JLabel("Rebounds: "+getStrFromArr(statsArr,7));
 		lblDefensiveRebounds.setBounds(560, firstStatsPixel+GAP*9, 170, 14);
 		this.add(lblDefensiveRebounds);
 		
-		JLabel lblDefensiveReboundsPerGame = new JLabel("Rebounds per Game: "+statsArr[8]);
+		JLabel lblDefensiveReboundsPerGame = new JLabel("Rebounds per Game: "+getStrFromArr(statsArr,8));
 		lblDefensiveReboundsPerGame.setBounds(560, firstStatsPixel+GAP*10, 170, 14);
 		this.add(lblDefensiveReboundsPerGame);
 		
-		JLabel lblTotalFouls = new JLabel("Total Fouls: "+statsArr[9]);
+		JLabel lblTotalFouls = new JLabel("Total Fouls: "+getStrFromArr(statsArr,9));
 		lblTotalFouls.setBounds(560, firstStatsPixel+GAP*11, 170, 14);
 		this.add(lblTotalFouls);
 		
-		JLabel lblFoulsPerGame = new JLabel("Fouls per game: "+statsArr[10]);
+		JLabel lblFoulsPerGame = new JLabel("Fouls per game: "+getStrFromArr(statsArr,10));
 		lblFoulsPerGame.setBounds(560, firstStatsPixel+GAP*12, 170, 14);
 		this.add(lblFoulsPerGame);
 		
-		JLabel lblLossBall = new JLabel("Loss Ball: "+statsArr[11]);
+		JLabel lblLossBall = new JLabel("Loss Ball: "+getStrFromArr(statsArr,11));
 		lblLossBall.setBounds(560, firstStatsPixel+GAP*13, 170, 14);
 		this.add(lblLossBall);
 
-		JLabel lblLossBallPerGame = new JLabel("Loss Ball per game: "+statsArr[12]);
+		JLabel lblLossBallPerGame = new JLabel("Loss Ball per game: "+getStrFromArr(statsArr,12));
 		lblLossBallPerGame.setBounds(560, firstStatsPixel+GAP*14, 170, 14);
 		this.add(lblLossBallPerGame);
 		
@@ -162,6 +169,14 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		byPoints.setBounds(220, 158, 120, 30);
 		byPoints.addActionListener(changePanel(this,i=i^1));
 		this.add(byPoints);
+	}
+	
+	public String getStrFromArr(String[]arr,int index) {
+		try {
+			return arr[index];
+		}catch(Exception e) {
+			return "not available";
+		}
 	}
 	
 	public static JPanel getPlayersSortedByNumbers(Team team) {
