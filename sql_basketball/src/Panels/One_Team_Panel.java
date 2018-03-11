@@ -48,7 +48,7 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 	
 	public One_Team_Panel(ArrayList<String> result) throws IOException, HeadlessException, SQLException {
 		tempTeam = new Team(result.get(1));
-		playersPanel = getPlayersSortedByPointsUp(tempTeam) ;
+		playersPanel = getPlayersSortedByNumbers(tempTeam) ;
 		paintScreen();
 	}
 	
