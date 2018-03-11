@@ -60,7 +60,12 @@ public class One_Player_Panel extends JPanel implements Paths_NBA {
 		// to add
 		ArrayList<String> teamResult = Actions.jdbc.runDBFunctionTableTypeReturn("GET_TEAM", "" + tempPlayer.teamid,
 				null);
-		Team tempTeam = new Team(teamResult.get(1));
+		Team tempTeam=new Team("none,,none,none,none,none,none,none,none");
+		try {
+			tempTeam = new Team(teamResult.get(1));
+		}catch(Exception e) {
+			tempTeam=new Team("none,,,none,none,none,none,none,none");
+		}
 		JLabel lblNewLabel = new JLabel("Team: " + tempTeam.name + " " + tempTeam.nickname);
 		lblNewLabel.setBounds(38, 74, 300, 14);
 		this.add(lblNewLabel);
