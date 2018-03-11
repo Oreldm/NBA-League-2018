@@ -1,8 +1,11 @@
 package Panels;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,11 +16,15 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import Main.Actions;
+import Main.AppGUI;
+import Main.LoginGUI;
 import nba_objects.Player;
 import nba_objects.Team;
 import sql_package.SQL_FUNCTIONS;
@@ -34,10 +41,16 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 	private static final long serialVersionUID = 1L;
 	
 	public static JScrollPane scrollPane;
-
-	@SuppressWarnings("static-access")
+	static JPanel playersPanel;
+	static Team tempTeam;
+	
 	public One_Team_Panel(ArrayList<String> result) throws IOException, HeadlessException, SQLException {
-		Team tempTeam = new Team(result.get(1));
+		tempTeam = new Team(result.get(1));
+		playersPanel = getPlayersSortedByPointsUp(tempTeam) ;
+		paintScreen();
+	}
+	
+	public void paintScreen() throws IOException {
 		System.out.println(tempTeam);
 
 		this.setLayout(null);
@@ -73,7 +86,6 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		scrollPane.setBounds(345, 52, 197, 258);
 		this.add(scrollPane);
 
-		JPanel playersPanel = getPlayersSortedByPointsDown(tempTeam);
 		
 		scrollPane.setViewportView(playersPanel);
 		
@@ -98,10 +110,12 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		
 		JButton byNumber = new JButton("By Number");
 		byNumber.setBounds(220, 118, 120, 30);
+		byNumber.addActionListener(changePanel(this,2));
 		this.add(byNumber);
 		
 		JButton byPoints = new JButton("By Points");
 		byPoints.setBounds(220, 158, 120, 30);
+		byPoints.addActionListener(changePanel(this,i=i^1));
 		this.add(byPoints);
 	}
 	
@@ -135,6 +149,60 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 			playersPanel.add(tempLabel);
 		}
 		return playersPanel;
+	}
+	
+	public static JPanel getPlayersSortedByPointsUp(Team team) {
+		JPanel playersPanel = new JPanel();
+		ArrayList<String> playersByPoints = Actions.jdbc.runDBFunction("PLAYER_BYTEAMID_POINTS_DOWN", team.id+"','0");
+		playersPanel.setLayout(new GridLayout(playersByPoints.size(), 0));
+		for(int i=1;i<playersByPoints.size();i++) {
+			String playerId = playersByPoints.get(i).split(",")[1];
+			String points = playersByPoints.get(i).split(",")[2];
+			ArrayList<String> player = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BY_ID", playerId, null);
+			Player tempPlayer= new Player(player.get(1),1);
+			System.out.println(tempPlayer.firstName);
+			JLabel tempLabel = new JLabel(tempPlayer.toString() +" POINTS : " +points);
+			playersPanel.add(tempLabel);
+		}
+		return playersPanel;
+	}
+	
+	private static int i=0; //if 0->by number  ,  1->points down ,  2->points up
+	
+	
+	public ActionListener changePanel(One_Team_Panel panel, int number) {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panel.removeAll();
+				scrollPane.remove(panel);
+				switch(number) {
+					case 2:
+						playersPanel=getPlayersSortedByNumbers(tempTeam);
+							break;
+					case 1:
+						playersPanel=getPlayersSortedByPointsDown(tempTeam);
+						break;
+					case 0:
+						playersPanel=getPlayersSortedByPointsUp(tempTeam);
+						break;
+				}
+				try {
+					panel.paintScreen();
+					if (Actions.insidePanel != null) {
+						Actions.totalFrame.remove(Actions.totalFrame);
+					}
+					Actions.insidePanel =panel;
+					Actions.totalFrame.add(Actions.insidePanel);
+					SwingUtilities.updateComponentTreeUI(Actions.totalFrame);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		};
+
+		return action;
 	}
 
 }
