@@ -159,6 +159,8 @@ public class JDBC {
 	 *            LOCATION_ID,STREET_ADDRESS,POSTAL_CODE,CITY,STATE_PROVINCE,COUNTRY_ID
 	 *            "INSERT_ROW","'LOCATIONS','11,''HAMESILA'',37000,''TEL-AVIV'',''YAYA'',''AR'''"
 	 */
+	
+	public static String errorString="";
 	public int runDBProcedure(String procedureName, String inputVariables) {
 		int errorCode=0;
 		try {
@@ -168,6 +170,7 @@ public class JDBC {
 		} catch (SQLException e) {
 			//e.printStackTrace();
 			errorCode = e.getErrorCode();
+			errorString=e.getMessage();
 			//StringWriter errors = new StringWriter();
 			//e.printStackTrace(new PrintWriter(errors));
 			System.out.println("CODE= "+ e.getErrorCode());

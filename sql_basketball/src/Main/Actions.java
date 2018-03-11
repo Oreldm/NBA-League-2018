@@ -342,6 +342,12 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;
 				case 20002: ((Remove_Player_Panel) insidePanel).setStatus("Player not found");
 							break;
+				case 6550: if(JDBC.errorString.contains("PLS-00904:")){
+								JDBC.errorString="";
+								((Remove_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
+							}else
+								((Remove_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong!");
+							break;
 				default: 	((Remove_Player_Panel) insidePanel).setStatus("Awkward error");
 							break;
 				
@@ -374,6 +380,13 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;
 				case 20002: ((Add_Player_Panel) insidePanel).setStatus("You have tried to insert a duplicate playerID");
 							break;
+				case 6550: 
+						if(JDBC.errorString.contains("PLS-00904:")){
+							JDBC.errorString="";
+							((Add_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
+						}else
+							((Add_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong!");
+  							break;
 				default: 	((Add_Player_Panel) insidePanel).setStatus("Awkward error");
 							break;
 				
@@ -440,6 +453,12 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;
 				case 20002: System.out.println("team not exists");
 							break;
+				case 6550: 	if(JDBC.errorString.contains("PLS-00904:")){
+								JDBC.errorString="";
+								System.out.println("You dont have the privileges!");
+							}else
+								System.out.println("OOPS... Something Wrong!");
+							break;
 				default: 	System.out.println("Awkward error");
 							break;
 				}
@@ -497,6 +516,12 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				switch (errorCode) {
 				case 0:		((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success! Please refresh the UI");
 	 						break;
+				case 6550: 	if(JDBC.errorString.contains("PLS-00904:")){
+								JDBC.errorString="";
+								((Trade_Players_Panel) insidePanel).getTradeStatus().setText("You dont have the privileges!");
+							}else
+								((Trade_Players_Panel) insidePanel).getTradeStatus().setText("OOPS... Something Wrong!");
+							break;
 				case 20001:
 				default:	((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Please select players!");
 							break;
