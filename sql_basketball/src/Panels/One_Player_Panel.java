@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -117,7 +118,6 @@ public class One_Player_Panel extends JPanel implements Paths_NBA {
 		JLabel lblStats = new JLabel("STATS");
 		lblStats.setBounds(297, 74, 46, 14);
 		this.add(lblStats);
-
 	}
-
+	
 }

@@ -44,8 +44,15 @@ public class Teams_Panel extends JPanel implements Paths_NBA {
 					new File(TEAMS_IMAGES_CACHE).mkdir();
 				}
 				URL url = new URL(TEAMS_IMAGES_URL + tempTeam.logoFileName);
+				try {
 				logo = ImageIO.read(url);
+				
 				ImageIO.write(logo, "gif", new File(TEAMS_IMAGES_CACHE + "\\" + tempTeam.logoFileName));
+				}catch(Exception e) {
+					url = new URL("https://yt3.ggpht.com/-p7dRfvM60F8/AAAAAAAAAAI/AAAAAAAAAAA/fzDL1FonNCU/s900-c-k-no-mo-rj-c0xffffff/photo.jpg");
+					logo= ImageIO.read(url);
+					
+				}
 			}
 
 			logo = ImagesGui.resize(logo, 50, 50);
