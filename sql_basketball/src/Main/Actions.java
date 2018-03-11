@@ -14,11 +14,13 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -35,7 +37,9 @@ import Panels.One_Team_Panel;
 import Panels.Players_Panel;
 import Panels.Remove_Player_Panel;
 import Panels.Teams_Panel;
+import Panels.Trade_Players_Panel;
 import Panels.Update_Player_Panel;
+import nba_objects.Player;
 import nba_objects.Team;
 import sql_package.JDBC;
 import sql_package.SQL_FUNCTIONS;
@@ -224,6 +228,8 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 						insidePanel = new One_Player_Panel(result);
 					} catch (Exception e1) {
 						e1.printStackTrace();
+						System.out.println("HERE123123123424");
+						System.out.println(result);
 					}
 					System.out.println(result);
 					totalFrame.add(insidePanel);
@@ -251,7 +257,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 						insidePanel = new Update_Player_Panel();
 						break;
 					case "5":
-						insidePanel = new Add_USER_Panel();
+						insidePanel = new Trade_Players_Panel();
 						break;
 					case "6":
 						insidePanel = new Add_USER_Panel();
@@ -430,7 +436,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				switch (errorCode) {
 				case 0:		System.out.println("Success!");
 				 			break;
-				case 20001: System.out.println("invalid shirt number");;
+				case 20001: System.out.println("illegal input");;
 							break;
 				case 20002: System.out.println("team not exists");
 							break;
@@ -438,6 +444,67 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 							break;
 				}
 			}
+		};
+		return action;
+	}
+
+	public static ActionListener getPlayers(ArrayList<Integer> allTeamsId) {
+		ActionListener action = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int selectedFirstItem = ((Trade_Players_Panel) insidePanel).getSelectedItemFromFirst();
+				int selectedSecondItem = ((Trade_Players_Panel) insidePanel).getSelectedItemFromSecond();
+				System.out.println("fist=" + selectedFirstItem + "id="+allTeamsId.get(selectedFirstItem));
+				System.out.println("second=" + selectedSecondItem +"id="+allTeamsId.get(selectedSecondItem));
+				ArrayList<String> playersNameForFirstBox = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BYTEAMID", ""+allTeamsId.get(selectedFirstItem), PLAYERS_TYPE);
+				ArrayList<String> playersNameForSecondBox = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BYTEAMID", ""+allTeamsId.get(selectedSecondItem), PLAYERS_TYPE);
+				System.out.println("-----");
+				System.out.println(playersNameForFirstBox);
+				System.out.println("-----");
+				System.out.println(playersNameForSecondBox);
+				((Trade_Players_Panel) insidePanel).getModel1().removeAllElements();
+				((Trade_Players_Panel) insidePanel).getModel2().removeAllElements();
+				int i=0;
+				while (i < playersNameForFirstBox.size()) {
+					Player tempPlayer = new Player(playersNameForFirstBox.get(i),0);
+					((Trade_Players_Panel) insidePanel).getModel1().addElement(tempPlayer.firstName + " " + tempPlayer.lastName);;
+					i++;
+				}
+				i=0;
+				while (i < playersNameForSecondBox.size()) {
+					Player tempPlayer = new Player(playersNameForSecondBox.get(i),0);
+					((Trade_Players_Panel) insidePanel).getModel2().addElement(tempPlayer.firstName + " " + tempPlayer.lastName);;
+					i++;
+				}
+			}
+		};
+		return action;
+	}
+
+	public static ActionListener makeTrade() {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				int errorCode;
+				String playerOne=((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamOne();
+				String playerTwo=((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamTwo();
+				System.out.println("Player1: "+playerOne + " PlayerTwo: " + playerTwo);
+				errorCode=jdbc.runDBProcedure("TRADE_PLAYERS", "'"+playerOne + "', '"+ playerTwo+"'");
+				switch (errorCode) {
+				case 0:		((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success!");
+	 						break;
+				case 20001:
+				default:	((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Please select players!");
+							break;
+				}
+				((Trade_Players_Panel) insidePanel).getTeams();
+				Actions.getPlayers(((Trade_Players_Panel) insidePanel).getAllTeamsId());
+			}
+			
 		};
 		return action;
 	}
