@@ -39,9 +39,9 @@ public class JDBC {
 			// create callable statement for function call with input variables.
 			CallableStatement cs;
 			if (inputVariables != null)
-				cs = connection.prepareCall("{? = call " + functionName + "('" + inputVariables + "')}");
+				cs = connection.prepareCall("{? = call Administrator." + functionName + "('" + inputVariables + "')}");
 			else
-				cs = connection.prepareCall("{? = call " + functionName + "}");
+				cs = connection.prepareCall("{? = call Administrator." + functionName + "}");
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.execute();
 			// The returned result is lines separated with $
@@ -65,7 +65,7 @@ public class JDBC {
 		ArrayList<String> result = new ArrayList<>();
 		CallableStatement stproc_stmt;
 		try {
-			String strCall = "{? = call " + functionName + "(?)}";
+			String strCall = "{? = call Administrator." + functionName + "(?)}";
 			stproc_stmt = connection.prepareCall(strCall);
 
 			if (returnType == null)
@@ -111,7 +111,7 @@ public class JDBC {
 		ArrayList<String> result = new ArrayList<>();
 		CallableStatement stproc_stmt;
 		try {
-			String call = "{? = call " + functionName + "(?,?)}";
+			String call = "{? = call Administrator." + functionName + "(?,?)}";
 			stproc_stmt = connection.prepareCall(call);
 
 			if (returnType == null)
@@ -163,7 +163,7 @@ public class JDBC {
 		int errorCode=0;
 		try {
 			System.out.println("{call " + procedureName + "(" + inputVariables + ")}");
-			CallableStatement cs = connection.prepareCall("{call " + procedureName + "(" + inputVariables + ")}");
+			CallableStatement cs = connection.prepareCall("{call Administrator." + procedureName + "(" + inputVariables + ")}");
 			cs.executeUpdate();
 		} catch (SQLException e) {
 			//e.printStackTrace();
