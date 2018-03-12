@@ -72,8 +72,13 @@ public class JDBC {
 				stproc_stmt.registerOutParameter(1, Types.VARCHAR);
 			else if (returnType.equals("int"))
 				stproc_stmt.registerOutParameter(1, Types.INTEGER);
-			else
-				stproc_stmt.registerOutParameter(1, Types.ARRAY, returnType);
+			else {
+				try {
+					stproc_stmt.registerOutParameter(1, Types.ARRAY, returnType);
+				}catch(Exception e) {
+					stproc_stmt.registerOutParameter(1, Types.ARRAY, "ADMINISTRATOR."+returnType);
+				}
+			}
 
 			stproc_stmt.setString(2, inputVariables);
 			stproc_stmt.executeUpdate();
