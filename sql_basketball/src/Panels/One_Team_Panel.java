@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import Main.Actions;
 import Main.AppGUI;
 import Main.LoginGUI;
+import nba_objects.Coach;
 import nba_objects.Player;
 import nba_objects.Team;
 import sql_package.SQL_FUNCTIONS;
@@ -175,7 +176,12 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		ArrayList<String> arrList= Actions.jdbc.runDBFunction("GET_COACH_BY_ID", ""+tempTeam.id);
 		JButton coachLbl = new JButton("Coach");
 		coachLbl.setBounds(560, firstStatsPixel+GAP*16, 170, 60);
-		coachLbl.addActionListener(Actions.changeToCoachPannel(arrList));
+		try {
+			new Coach(arrList);
+			coachLbl.addActionListener(Actions.changeToCoachPannel(arrList));
+		}catch(Exception e) {
+			//do nothing
+		}
 		this.add(coachLbl);
 	}
 	

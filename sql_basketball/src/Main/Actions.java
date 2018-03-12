@@ -74,11 +74,10 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					// The next 4 lines are for caching the players
 					ArrayList<String> result = jdbc.runDBFunction(GET_TABLE_TO_STRING, TEAMS_TABLE);
 					teamsPanel = new Teams_Panel(result);
-					
+
 					result = jdbc.runDBFunctionTableTypeReturn(GET_PLAYERS, ALL, PLAYERS_TYPE);
 					playersPanel = new Players_Panel(result);
-					
-					
+
 					/**
 					 * !!!CHANGE TO MAIN PAGE!!!
 					 */
@@ -117,7 +116,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				try {
 					if (insidePanel != null)
 						frame.remove(insidePanel);
-					if(teamsPanel==null)
+					if (teamsPanel == null)
 						teamsPanel = new Teams_Panel(result);
 					insidePanel = teamsPanel;
 					frame.add(insidePanel, BorderLayout.CENTER);
@@ -136,29 +135,30 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 
 	public static ActionListener gamePanelSearch() {
 		ActionListener action = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//ArrayList<String> result = jdbc.runDBFunction(GET_TABLE_TO_STRING, TEAMS_TABLE);
+				// ArrayList<String> result = jdbc.runDBFunction(GET_TABLE_TO_STRING,
+				// TEAMS_TABLE);
 				try {
 					if (insidePanel != null)
 						totalFrame.remove(insidePanel);
-					//insidePanel = new Game_Panel_Search_Page(result);
+					// insidePanel = new Game_Panel_Search_Page(result);
 					insidePanel = new Game_Panel_Search_Page();
 					totalFrame.add(insidePanel, BorderLayout.CENTER);
-					SwingUtilities.updateComponentTreeUI(totalFrame);	
+					SwingUtilities.updateComponentTreeUI(totalFrame);
 				} catch (HeadlessException e1) {
 					e1.printStackTrace();
-//				} catch (SQLException e1) {
-//					e1.printStackTrace();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
+					// } catch (SQLException e1) {
+					// e1.printStackTrace();
+					// } catch (IOException e1) {
+					// e1.printStackTrace();
 				}
 			}
 		};
 		return action;
 	}
-	
+
 	public static ActionListener changeToGamesPannel(JFrame frame, int homeTeam, int visitTeam) {
 		ActionListener action = new ActionListener() {
 
@@ -166,7 +166,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn(GET_GAMES, homeTeam, visitTeam,
 						GAMES_TYPE);
-				if(result.size()==0)
+				if (result.size() == 0)
 					return;
 				totalFrame = frame;
 				System.out.println(result);
@@ -188,15 +188,15 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		};
 		return action;
 	}
-	
+
 	public static ActionListener changeToCoachPannel(ArrayList<String> result) {
 		ActionListener action = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
-					lastPanel=insidePanel;
+					lastPanel = insidePanel;
 					if (insidePanel != null)
 						totalFrame.remove(insidePanel);
 					insidePanel = new Coach_Panel(result);
@@ -213,13 +213,13 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		};
 		return action;
 	}
-	
+
 	public static ActionListener changeToLastPanel() {
 		ActionListener action = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
 					if (insidePanel != null)
 						totalFrame.remove(insidePanel);
@@ -228,7 +228,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					SwingUtilities.updateComponentTreeUI(totalFrame);
 				} catch (HeadlessException e1) {
 					e1.printStackTrace();
-				} 
+				}
 			}
 		};
 		return action;
@@ -317,8 +317,8 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					System.out.println(result);
 					totalFrame.add(insidePanel);
 					SwingUtilities.updateComponentTreeUI(totalFrame);
-					
-				}else if (e.getComponent().getName().contains("Mgmt_label")) {
+
+				} else if (e.getComponent().getName().contains("Mgmt_label")) {
 					System.out.println("mgmt_label");
 					String choice = ((JLabel) e.getComponent()).getName().substring(10);
 					System.out.println(choice);
@@ -418,25 +418,29 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					playerId = ((Remove_Player_Panel) playersPanel).getLabelText();
 				}
 				System.out.println("CHECK=" + playerId);
-				errorCode=jdbc.runDBProcedure("DELETE_PLAYER", playerId);
+				errorCode = jdbc.runDBProcedure("DELETE_PLAYER", playerId);
 				System.out.println("----");
 				switch (errorCode) {
-				case 0: 	((Remove_Player_Panel) insidePanel).setStatus("Success!");
-							break;
-				case 20002: ((Remove_Player_Panel) insidePanel).setStatus("Player not found");
-							break;
-				case 6550: if(JDBC.errorString.contains("PLS-00904:")){
-								JDBC.errorString="";
-								((Remove_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
-							}else
-								((Remove_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong!");
-							break;
-				default: 	((Remove_Player_Panel) insidePanel).setStatus("Awkward error");
-							break;
-				
-				
+				case 0:
+					((Remove_Player_Panel) insidePanel).setStatus("Success!");
+					break;
+				case 20002:
+					((Remove_Player_Panel) insidePanel).setStatus("Player not found");
+					break;
+				case 6550:
+					if (JDBC.errorString.contains("PLS-00904:")) {
+						System.out.println("You dont have the privileges!");
+						JDBC.errorString = "";
+						((Remove_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
+					} else
+						((Remove_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong! Wrong Input?");
+					break;
+				default:
+					((Remove_Player_Panel) insidePanel).setStatus("Awkward error");
+					break;
+
 				}
-				//System.out.println("Success");
+				// System.out.println("Success");
 			}
 		};
 		return action;
@@ -454,37 +458,41 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} catch (Exception e1) {
 					playerData = ((Add_Player_Panel) playersPanel).getData();
 				}
-				playerData=playerData.replace(", ,", ", NULL,");
-				playerData=playerData.replace(", ,", ", NULL,");
+				playerData = playerData.replace(", ,", ", NULL,");
+				playerData = playerData.replace(", ,", ", NULL,");
 				System.out.println(playerData);
-				errorCode=jdbc.runDBProcedure("ADD_PLAYER", playerData);
+				errorCode = jdbc.runDBProcedure("ADD_PLAYER", playerData);
 				switch (errorCode) {
-				case 0: 	((Add_Player_Panel) insidePanel).setStatus("Success!");
-							break;
-				case 20002: ((Add_Player_Panel) insidePanel).setStatus("You have tried to insert a duplicate playerID");
-							break;
-				case 6550: 
-						if(JDBC.errorString.contains("PLS-00904:")){
-							JDBC.errorString="";
-							((Add_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
-						}else
-							((Add_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong!");
-  							break;
-				default: 	((Add_Player_Panel) insidePanel).setStatus("Awkward error");
-							break;
-				
-				
+				case 0:
+					((Add_Player_Panel) insidePanel).setStatus("Success!");
+					break;
+				case 20002:
+					((Add_Player_Panel) insidePanel).setStatus("You have tried to insert a duplicate playerID");
+					break;
+				case 6550:
+					if (JDBC.errorString.contains("PLS-00904:")) {
+						System.out.println("You dont have the privileges!");
+						JDBC.errorString = "";
+						((Add_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
+					} else
+						((Add_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong! Wrong Input?");
+					break;
+				default:
+					((Add_Player_Panel) insidePanel).setStatus("Awkward error");
+					break;
+
 				}
 			}
-			
+
 		};
 		return action;
 	}
 
 	public static ActionListener searchPlayer() {
-		
+
 		ActionListener action = new ActionListener() {
-			private boolean firstTime=true;
+			private boolean firstTime = true;
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<String> result = new ArrayList<>();
@@ -494,21 +502,22 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} catch (Exception e1) {
 					playerToSearch = ((Update_Player_Panel) playersPanel).getPlayerToSearch();
 				}
-				result=jdbc.runDBFunction("CHECK_PLAYER_ID", playerToSearch);
+				result = jdbc.runDBFunction("CHECK_PLAYER_ID", playerToSearch);
 				System.out.println(result.get(0));
 				if (result.get(0).equals("0"))
-						((Update_Player_Panel) insidePanel).setStatus("Player not found!");
+					((Update_Player_Panel) insidePanel).setStatus("Player not found!");
 				else {
 					((Update_Player_Panel) insidePanel).setStatus("Player found!");
 					((Update_Player_Panel) insidePanel).setEditableFalse();
-					if (firstTime){
-						((Update_Player_Panel) insidePanel).createSubPanel(((Update_Player_Panel) insidePanel).getSubPanel());
-						firstTime=false;
+					if (firstTime) {
+						((Update_Player_Panel) insidePanel)
+								.createSubPanel(((Update_Player_Panel) insidePanel).getSubPanel());
+						firstTime = false;
 					}
 				}
-						
+
 			}
-			
+
 		};
 		return action;
 	}
@@ -527,22 +536,28 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					playerData = ((Update_Player_Panel) playersPanel).getData();
 				}
 				System.out.println(playerData);
-				errorCode=jdbc.runDBProcedure("UPDATE_PLAYER", playerData);
+				errorCode = jdbc.runDBProcedure("UPDATE_PLAYER", playerData);
 				switch (errorCode) {
-				case 0:		((Update_Player_Panel) insidePanel).setStatus("Success!");
-				 			break;
-				case 20001: ((Update_Player_Panel) insidePanel).setStatus("illegal input");
-							break;
-				case 20002: ((Update_Player_Panel) insidePanel).setStatus("team not exists");
-							break;
-				case 6550: 	if(JDBC.errorString.contains("PLS-00904:")){
-								JDBC.errorString="";
-								((Update_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
-							}else
-								((Update_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong! Wrong Input?");
-							break;
-				default: 	((Update_Player_Panel) insidePanel).setStatus("Awkward error");
-							break;
+				case 0:
+					((Update_Player_Panel) insidePanel).setStatus("Success!");
+					break;
+				case 20001:
+					((Update_Player_Panel) insidePanel).setStatus("illegal input");
+					break;
+				case 20002:
+					((Update_Player_Panel) insidePanel).setStatus("team not exists");
+					break;
+				case 6550:
+					if (JDBC.errorString.contains("PLS-00904:")) {
+						JDBC.errorString = "";
+						System.out.println("You dont have the privileges!");
+						((Update_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
+					} else
+						((Update_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong! Wrong Input?");
+					break;
+				default:
+					((Update_Player_Panel) insidePanel).setStatus("Awkward error");
+					break;
 				}
 			}
 		};
@@ -551,32 +566,38 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 
 	public static ActionListener getPlayers(ArrayList<Integer> allTeamsId) {
 		ActionListener action = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int selectedFirstItem = ((Trade_Players_Panel) insidePanel).getSelectedItemFromFirst();
 				int selectedSecondItem = ((Trade_Players_Panel) insidePanel).getSelectedItemFromSecond();
-				System.out.println("fist=" + selectedFirstItem + "id="+allTeamsId.get(selectedFirstItem));
-				System.out.println("second=" + selectedSecondItem +"id="+allTeamsId.get(selectedSecondItem));
-				ArrayList<String> playersNameForFirstBox = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BYTEAMID", ""+allTeamsId.get(selectedFirstItem), PLAYERS_TYPE);
-				ArrayList<String> playersNameForSecondBox = Actions.jdbc.runDBFunctionTableTypeReturn("GET_PLAYER_BYTEAMID", ""+allTeamsId.get(selectedSecondItem), PLAYERS_TYPE);
+				System.out.println("fist=" + selectedFirstItem + "id=" + allTeamsId.get(selectedFirstItem));
+				System.out.println("second=" + selectedSecondItem + "id=" + allTeamsId.get(selectedSecondItem));
+				ArrayList<String> playersNameForFirstBox = Actions.jdbc.runDBFunctionTableTypeReturn(
+						"GET_PLAYER_BYTEAMID", "" + allTeamsId.get(selectedFirstItem), PLAYERS_TYPE);
+				ArrayList<String> playersNameForSecondBox = Actions.jdbc.runDBFunctionTableTypeReturn(
+						"GET_PLAYER_BYTEAMID", "" + allTeamsId.get(selectedSecondItem), PLAYERS_TYPE);
 				System.out.println("-----");
 				System.out.println(playersNameForFirstBox);
 				System.out.println("-----");
 				System.out.println(playersNameForSecondBox);
 				((Trade_Players_Panel) insidePanel).getModel1().removeAllElements();
 				((Trade_Players_Panel) insidePanel).getModel2().removeAllElements();
-				int i=0;
+				int i = 0;
 				while (i < playersNameForFirstBox.size()) {
-					Player tempPlayer = new Player(playersNameForFirstBox.get(i),0);
-					((Trade_Players_Panel) insidePanel).getModel1().addElement(tempPlayer.firstName + " " + tempPlayer.lastName);;
+					Player tempPlayer = new Player(playersNameForFirstBox.get(i), 0);
+					((Trade_Players_Panel) insidePanel).getModel1()
+							.addElement(tempPlayer.firstName + " " + tempPlayer.lastName);
+					;
 					i++;
 				}
-				i=0;
+				i = 0;
 				while (i < playersNameForSecondBox.size()) {
-					Player tempPlayer = new Player(playersNameForSecondBox.get(i),0);
-					((Trade_Players_Panel) insidePanel).getModel2().addElement(tempPlayer.firstName + " " + tempPlayer.lastName);;
+					Player tempPlayer = new Player(playersNameForSecondBox.get(i), 0);
+					((Trade_Players_Panel) insidePanel).getModel2()
+							.addElement(tempPlayer.firstName + " " + tempPlayer.lastName);
+					;
 					i++;
 				}
 			}
@@ -591,49 +612,56 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				int errorCode;
-				String playerOne=((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamOne();
-				String playerTwo=((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamTwo();
-				System.out.println("Player1: "+playerOne + " PlayerTwo: " + playerTwo);
-				errorCode=jdbc.runDBProcedure("TRADE_PLAYERS", "'"+playerOne + "', '"+ playerTwo+"'");
+				String playerOne = ((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamOne();
+				String playerTwo = ((Trade_Players_Panel) insidePanel).getSelectedPlayerFromTeamTwo();
+				System.out.println("Player1: " + playerOne + " PlayerTwo: " + playerTwo);
+				errorCode = jdbc.runDBProcedure("TRADE_PLAYERS", "'" + playerOne + "', '" + playerTwo + "'");
 				switch (errorCode) {
-				case 0:		((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success! Please refresh the UI");
-	 						break;
-				case 6550: 	if(JDBC.errorString.contains("PLS-00904:")){
-								JDBC.errorString="";
-								((Trade_Players_Panel) insidePanel).getTradeStatus().setText("You dont have the privileges!");
-							}else
-								((Trade_Players_Panel) insidePanel).getTradeStatus().setText("OOPS... Something Wrong!");
-							break;
+				case 0:
+					((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Success! Please refresh the UI");
+					break;
+				case 6550:
+					if (JDBC.errorString.contains("PLS-00904:")) {
+						System.out.println("You dont have the privileges!");
+						JDBC.errorString = "";
+						((Trade_Players_Panel) insidePanel).getTradeStatus().setText("You dont have the privileges!");
+					} else
+						((Trade_Players_Panel) insidePanel).getTradeStatus()
+								.setText("OOPS... Something Wrong! Wrong Input?");
+					break;
 				case 20001:
-				default:	((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Please select players!");
-							break;
+				default:
+					((Trade_Players_Panel) insidePanel).getTradeStatus().setText("Please select players!");
+					break;
 				}
-//				((Trade_Players_Panel) insidePanel).getTeams();
-//				Actions.getPlayers(((Trade_Players_Panel) insidePanel).getAllTeamsId());
-//				((Trade_Players_Panel) insidePanel).getPanel2().updateUI();
+				// ((Trade_Players_Panel) insidePanel).getTeams();
+				// Actions.getPlayers(((Trade_Players_Panel) insidePanel).getAllTeamsId());
+				// ((Trade_Players_Panel) insidePanel).getPanel2().updateUI();
 			}
-			
+
 		};
 		return action;
 	}
 
 	private static ActionListener gamesSearchListener;
+
 	public static ActionListener getGames(ArrayList<Integer> allTeamsId) {
-			ActionListener action = new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int selectedFirstItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromFirst();
-					int selectedSecondItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromSecond();
-					System.out.println("first=" + selectedFirstItem + " id="+allTeamsId.get(selectedFirstItem));
-					System.out.println("second=" + selectedSecondItem +" id="+allTeamsId.get(selectedSecondItem));
-					if(gamesSearchListener!=null)
-						((Game_Panel_Search_Page) insidePanel).getJBSearch().removeActionListener(gamesSearchListener);
-					gamesSearchListener = changeToGamesPannel(totalFrame, allTeamsId.get(selectedFirstItem), allTeamsId.get(selectedSecondItem));
-					((Game_Panel_Search_Page) insidePanel).getJBSearch().addActionListener(gamesSearchListener);
-				}
-			};
-			return action;
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedFirstItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromFirst();
+				int selectedSecondItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromSecond();
+				System.out.println("first=" + selectedFirstItem + " id=" + allTeamsId.get(selectedFirstItem));
+				System.out.println("second=" + selectedSecondItem + " id=" + allTeamsId.get(selectedSecondItem));
+				if (gamesSearchListener != null)
+					((Game_Panel_Search_Page) insidePanel).getJBSearch().removeActionListener(gamesSearchListener);
+				gamesSearchListener = changeToGamesPannel(totalFrame, allTeamsId.get(selectedFirstItem),
+						allTeamsId.get(selectedSecondItem));
+				((Game_Panel_Search_Page) insidePanel).getJBSearch().addActionListener(gamesSearchListener);
+			}
+		};
+		return action;
 	}
 
 }

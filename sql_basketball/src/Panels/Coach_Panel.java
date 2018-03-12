@@ -33,6 +33,7 @@ public class Coach_Panel extends JPanel implements Paths_NBA {
 	private static final long serialVersionUID = 1L;
 	
 	public Coach_Panel(ArrayList<String> result) throws HeadlessException, SQLException, IOException {
+
 		Coach coach=new Coach(result);
 		
 		this.setLayout(null);

@@ -179,6 +179,9 @@ public class JDBC {
 			//StringWriter errors = new StringWriter();
 			//e.printStackTrace(new PrintWriter(errors));
 			System.out.println("CODE= "+ e.getErrorCode());
+			if(e.getErrorCode()==6550 && e.getMessage().contains("privi")) {
+				System.out.println("You dont have the privileges!");
+			}
 		}
 
 		return errorCode;

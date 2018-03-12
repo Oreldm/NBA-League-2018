@@ -3,6 +3,8 @@ package Panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import Main.Actions;
 
 public class Add_USER_Panel extends JPanel{
 	private String GUEST = "Guest";
@@ -37,20 +41,17 @@ public class Add_USER_Panel extends JPanel{
 		panel.add(premission);
 		panel.add(jCPremission);
 		setLayout(new BorderLayout());
+		jbInsertUser.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Actions.jdbc.runDBProcedure("PLAYERSPACKAGE.ADD_USER", "'"+jtfUsername.getText()+"',"+"'"+jtfPassword.getText()+"',"
+			+"'"+premissions[jCPremission.getSelectedIndex()]+"'");
+			}
+		});
 		add(jbInsertUser, BorderLayout.SOUTH);
 		add(scroll, BorderLayout.CENTER);
 		setSize(300, 300);
 		setVisible(true);
 	}
-//	public static void main(String[] args) {
-//		JFrame frame = new JFrame();
-//		frame.add(new Add_USER_Panel());
-//		frame.pack();
-//		frame.setSize(300, 180);
-//		frame.setLocationRelativeTo(null); // Center the frame
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setAlwaysOnTop(true);
-//		frame.setResizable(false);
-//		frame.setVisible(true);
-//	}
 }
