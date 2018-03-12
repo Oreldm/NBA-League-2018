@@ -182,7 +182,8 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 	public static JPanel getPlayersSortedByNumbers(Team team) {
 		ArrayList<String> players = Actions.jdbc.runDBFunctionTableTypeReturn(GET_PLAYER_BYTEAMID_BY_NUMBER_SORT, ""+team.id, PLAYERS_TYPE);
 		JPanel playersPanel = new JPanel();
-		playersPanel.setLayout(new GridLayout(players.size(), 0));
+		int size = (players.size()==0) ? 1 : players.size();
+		playersPanel.setLayout(new GridLayout(size, 0));
 		for(String str : players) {
 			try {
 				Player tempPlayer = new Player(str,0);
