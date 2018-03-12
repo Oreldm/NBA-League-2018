@@ -530,24 +530,18 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				errorCode=jdbc.runDBProcedure("UPDATE_PLAYER", playerData);
 				switch (errorCode) {
 				case 0:		((Update_Player_Panel) insidePanel).setStatus("Success!");
-							//System.out.println("Success!");
 				 			break;
 				case 20001: ((Update_Player_Panel) insidePanel).setStatus("illegal input");
-							//System.out.println("illegal input");;
 							break;
 				case 20002: ((Update_Player_Panel) insidePanel).setStatus("team not exists");
-							//System.out.println("team not exists");
 							break;
 				case 6550: 	if(JDBC.errorString.contains("PLS-00904:")){
 								JDBC.errorString="";
 								((Update_Player_Panel) insidePanel).setStatus("You dont have the privileges!");
-//								System.out.println("You dont have the privileges!");
 							}else
-								((Update_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong!");
-								//System.out.println("OOPS... Something Wrong!");
+								((Update_Player_Panel) insidePanel).setStatus("OOPS... Something Wrong! Wrong Input?");
 							break;
 				default: 	((Update_Player_Panel) insidePanel).setStatus("Awkward error");
-							//System.out.println("Awkward error");
 							break;
 				}
 			}
