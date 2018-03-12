@@ -30,6 +30,7 @@ import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
+import Panels.Game_Panel_Search_Page;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
 import Panels.One_Player_Panel;
@@ -124,6 +125,31 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
+	public static ActionListener gamePanelSearch() {
+		ActionListener action = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//ArrayList<String> result = jdbc.runDBFunction(GET_TABLE_TO_STRING, TEAMS_TABLE);
+				try {
+					if (insidePanel != null)
+						totalFrame.remove(insidePanel);
+					//insidePanel = new Game_Panel_Search_Page(result);
+					insidePanel = new Game_Panel_Search_Page();
+					totalFrame.add(insidePanel, BorderLayout.CENTER);
+					SwingUtilities.updateComponentTreeUI(totalFrame);	
+				} catch (HeadlessException e1) {
+					e1.printStackTrace();
+//				} catch (SQLException e1) {
+//					e1.printStackTrace();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+				}
+			}
+		};
+		return action;
+	}
+	
 	public static ActionListener changeToGamesPannel(JFrame frame, int homeTeam, int visitTeam) {
 		ActionListener action = new ActionListener() {
 
@@ -132,6 +158,7 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn(GET_GAMES, homeTeam, visitTeam,
 						GAMES_TYPE);
 				totalFrame = frame;
+				System.out.println(result);
 				try {
 					if (insidePanel != null)
 						frame.remove(insidePanel);
@@ -539,6 +566,23 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			
 		};
 		return action;
+	}
+
+	public static ActionListener getGames(ArrayList<Integer> allTeamsId) {
+			ActionListener action = new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					int selectedFirstItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromFirst();
+					int selectedSecondItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromSecond();
+					System.out.println("fist=" + selectedFirstItem + "id="+allTeamsId.get(selectedFirstItem));
+					System.out.println("second=" + selectedSecondItem +"id="+allTeamsId.get(selectedSecondItem));
+					
+					((Game_Panel_Search_Page) insidePanel).getJBSearch().addActionListener(changeToGamesPannel(totalFrame, allTeamsId.get(selectedFirstItem), allTeamsId.get(selectedSecondItem)));
+				}
+			};
+			return action;
 	}
 
 	// public static void main(String[] args) {

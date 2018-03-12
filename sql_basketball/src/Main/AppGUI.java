@@ -54,7 +54,8 @@ public class AppGUI extends JFrame implements ImagesGui {
 
 		jbTeams.addActionListener(Actions.changeToTeamsPannel(this));
 		jbPlayers.addActionListener(Actions.changeToPlayersPannel());
-		jbGames.addActionListener(Actions.changeToGamesPannel(this, 1610612754, 1610612756));
+		//jbGames.addActionListener(Actions.changeToGamesPannel(this, 1610612754, 1610612756));
+		jbGames.addActionListener(Actions.gamePanelSearch());
 		jbManagement.addActionListener(Actions.changeToManagementPanel(this));
 
 		// frame commands
