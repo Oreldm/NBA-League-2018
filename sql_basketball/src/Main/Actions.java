@@ -30,6 +30,7 @@ import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 import Panels.Add_Player_Panel;
 import Panels.Add_USER_Panel;
+import Panels.Coach_Panel;
 import Panels.Game_Panel_Search_Page;
 import Panels.Games_Panel_After_Search;
 import Panels.Management_Panel;
@@ -53,6 +54,8 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 	public static JPanel insidePanel;
 	public static JPanel playersPanel;
 	public static JPanel playersPanelCache;
+	public static JPanel lastPanel;
+	public static JPanel teamsPanel;
 	public static boolean isFirstTime = true;
 
 	public static ActionListener connectToDatabase(JFrame loginGui) {
@@ -68,10 +71,14 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 					String password = ((LoginGUI) loginGui).getJtfPassword().getText();
 					jdbc.loadDriverAndConnnect(user, password);
 
-					// The next 2 lines are for caching the players
-					ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn(GET_PLAYERS, ALL, PLAYERS_TYPE);
+					// The next 4 lines are for caching the players
+					ArrayList<String> result = jdbc.runDBFunction(GET_TABLE_TO_STRING, TEAMS_TABLE);
+					teamsPanel = new Teams_Panel(result);
+					
+					result = jdbc.runDBFunctionTableTypeReturn(GET_PLAYERS, ALL, PLAYERS_TYPE);
 					playersPanel = new Players_Panel(result);
-
+					
+					
 					/**
 					 * !!!CHANGE TO MAIN PAGE!!!
 					 */
@@ -110,7 +117,9 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				try {
 					if (insidePanel != null)
 						frame.remove(insidePanel);
-					insidePanel = new Teams_Panel(result);
+					if(teamsPanel==null)
+						teamsPanel = new Teams_Panel(result);
+					insidePanel = teamsPanel;
 					frame.add(insidePanel, BorderLayout.CENTER);
 					SwingUtilities.updateComponentTreeUI(frame);
 				} catch (HeadlessException e1) {
@@ -157,6 +166,8 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn(GET_GAMES, homeTeam, visitTeam,
 						GAMES_TYPE);
+				if(result.size()==0)
+					return;
 				totalFrame = frame;
 				System.out.println(result);
 				try {
@@ -173,6 +184,51 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			}
+		};
+		return action;
+	}
+	
+	public static ActionListener changeToCoachPannel(ArrayList<String> result) {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					lastPanel=insidePanel;
+					if (insidePanel != null)
+						totalFrame.remove(insidePanel);
+					insidePanel = new Coach_Panel(result);
+					totalFrame.add(insidePanel, BorderLayout.CENTER);
+					SwingUtilities.updateComponentTreeUI(totalFrame);
+				} catch (HeadlessException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		};
+		return action;
+	}
+	
+	public static ActionListener changeToLastPanel() {
+		ActionListener action = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					if (insidePanel != null)
+						totalFrame.remove(insidePanel);
+					insidePanel = lastPanel;
+					totalFrame.add(insidePanel, BorderLayout.CENTER);
+					SwingUtilities.updateComponentTreeUI(totalFrame);
+				} catch (HeadlessException e1) {
+					e1.printStackTrace();
+				} 
 			}
 		};
 		return action;
@@ -425,7 +481,6 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
-
 	public static ActionListener searchPlayer() {
 		
 		ActionListener action = new ActionListener() {
@@ -568,37 +623,23 @@ public class Actions implements SQL_FUNCTIONS, SQL_TABLES, SQL_TYPES {
 		return action;
 	}
 
+	private static ActionListener gamesSearchListener;
 	public static ActionListener getGames(ArrayList<Integer> allTeamsId) {
 			ActionListener action = new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
 					int selectedFirstItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromFirst();
 					int selectedSecondItem = ((Game_Panel_Search_Page) insidePanel).getSelectedItemFromSecond();
-					System.out.println("fist=" + selectedFirstItem + "id="+allTeamsId.get(selectedFirstItem));
-					System.out.println("second=" + selectedSecondItem +"id="+allTeamsId.get(selectedSecondItem));
-					
-					((Game_Panel_Search_Page) insidePanel).getJBSearch().addActionListener(changeToGamesPannel(totalFrame, allTeamsId.get(selectedFirstItem), allTeamsId.get(selectedSecondItem)));
+					System.out.println("first=" + selectedFirstItem + " id="+allTeamsId.get(selectedFirstItem));
+					System.out.println("second=" + selectedSecondItem +" id="+allTeamsId.get(selectedSecondItem));
+					if(gamesSearchListener!=null)
+						((Game_Panel_Search_Page) insidePanel).getJBSearch().removeActionListener(gamesSearchListener);
+					gamesSearchListener = changeToGamesPannel(totalFrame, allTeamsId.get(selectedFirstItem), allTeamsId.get(selectedSecondItem));
+					((Game_Panel_Search_Page) insidePanel).getJBSearch().addActionListener(gamesSearchListener);
 				}
 			};
 			return action;
 	}
-
-	// public static void main(String[] args) {
-	//
-	// try {
-	// jdbc.loadDriverAndConnnect("Administrator", "Admin11");
-	// } catch (ClassNotFoundException | SQLException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// ArrayList<String> result =
-	// jdbc.runDBFunctionTableTypeReturn(GET_TEAM,1610612766,null);
-	// ArrayList<String> result = jdbc.runDBFunctionTableTypeReturn(GET_PLAYERS,
-	// "s",
-	// PLAYERS_TYPE);
-	// System.out.println(result.get(1));
-	// }
 
 }

@@ -169,6 +169,14 @@ public class One_Team_Panel extends JPanel implements Paths_NBA, SQL_FUNCTIONS, 
 		byPoints.setBounds(220, 158, 120, 30);
 		byPoints.addActionListener(changePanel(this,i=i^1));
 		this.add(byPoints);
+		
+		
+		//to add page for coach
+		ArrayList<String> arrList= Actions.jdbc.runDBFunction("GET_COACH_BY_ID", ""+tempTeam.id);
+		JButton coachLbl = new JButton("Coach");
+		coachLbl.setBounds(560, firstStatsPixel+GAP*16, 170, 60);
+		coachLbl.addActionListener(Actions.changeToCoachPannel(arrList));
+		this.add(coachLbl);
 	}
 	
 	public String getStrFromArr(String[]arr,int index) {
