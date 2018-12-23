@@ -1,5 +1,7 @@
 # NBA-League-2018
 
+Oracle-PL/SQL Project I built
+
 This project shows & visualise the teams, players, games & stats of the NBA.
 It uses java & oracle-database w/ PL/SQL.
 
